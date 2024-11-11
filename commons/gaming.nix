@@ -3,12 +3,6 @@
 
     environment.systemPackages = with pkgs; [
         discord-ptb
-        dwarf-fortress
-        dwarf-fortress-packages.dwarf-fortress-full
-        prismlauncher #this is minecraft launcher
-        fallout-ce
-        quake3e
-        freeciv
     ];
 
 

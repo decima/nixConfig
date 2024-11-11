@@ -5,10 +5,7 @@
         spotify
         pulseaudioFull
         pavucontrol
-        sway-contrib.grimshot #screenshots
-        playerctl
-        alsa-utils
+        sway-contrib.grimshot
     ];
-
     
 }
