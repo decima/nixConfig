@@ -31,6 +31,11 @@
                 inherit system;
                 modules = [./machines/vm/configuration.nix];
             };
+            zeus = lib.nixosSystem { 
+                inherit system; 
+                modules = [./machines/zeus/configuration.nix]; 
+            };
+
             ### DO NOT REMOVE OR MOVE THIS LINE : ADD MACHINE CONFIG OVER THIS LINE
         };
     };
