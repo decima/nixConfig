@@ -12,7 +12,10 @@ systemRebuildSpecific:
 updateSystem: 
 	nix flake update
 
-rebuild: homeRebuild systemRebuild
+askSudo:
+	sudo echo "sudo access granted"
+
+rebuild: askSudo homeRebuild systemRebuild
 
 homeGenerations:
 	home-manager generations
@@ -23,3 +26,5 @@ clearHistory:
 rebuildHardware:
 	nixos-generate-config --dir machines/$(host)
 
+reboot:
+	sudo reboot

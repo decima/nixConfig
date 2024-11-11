@@ -7,11 +7,14 @@
             url = "github:nix-community/home-manager/release-24.05";
             inputs.nixpkgs.follows = "nixpkgs";
         };
-        hyprland.url = "github:hyprwm/Hyprland";
-
+        hyprland.url = "github:hyprwm/Hyprland/v0.42.0";
+        hyprland-plugins = {
+            url = "github:hyprwm/hyprland-plugins";
+            inputs.hyprland.follows = "hyprland";
+            };
     };
 
-    outputs = { self, nixpkgs, home-manager, ...}:
+    outputs = { self, nixpkgs, home-manager,hyprland, ...}:
         let
             lib = nixpkgs.lib;
             system = "x86_64-linux";
@@ -21,26 +24,6 @@
                     enable = true;
                     # set the flake package
                     package = self.inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-                    settings = {
-                        "$mod" = "SUPER";
-                        bind =
-                        [
-                            "$mod, F, exec, firefox"
-                            ", Print, exec, grimblast copy area"
-                        ]
-                        ++ (
-                            # workspaces
-                            # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
-                            builtins.concatLists (builtins.genList (i:
-                                let ws = i + 1;
-                                in [
-                                "$mod, code:1${toString i}, workspace, ${toString ws}"
-                                "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
-                                ]
-                            )
-                            9)
-                        );
-                    };
                 };
             };
         in {
@@ -51,6 +34,9 @@
             homeConfigurations = {
                 decima = home-manager.lib.homeManagerConfiguration {
                     inherit pkgs;
+                    extraSpecialArgs = {
+                        inputs = self.inputs;
+                    };
                     modules = [
                         hyprlandModule
                         ./homes/decima.nix
@@ -63,6 +49,7 @@
         nixosConfigurations = {
             vm = lib.nixosSystem {
                 inherit system;
+                extraArgs = {inputs = self.inputs;};
                 modules = [./machines/vm/configuration.nix];
             };
             ### DO NOT REMOVE OR MOVE THIS LINE : ADD MACHINE CONFIG OVER THIS LINE
