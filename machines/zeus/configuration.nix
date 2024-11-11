@@ -2,6 +2,7 @@
 {
     imports = [
         ./hardware-configuration.nix
+        ../../commons/development.nix
         ../../configuration.nix
     ];
     networking.hostName = "zeus"; # Define your hostname.
