@@ -9,6 +9,9 @@
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
 
+    environment.systemPackages = with pkgs; [
+        discord-ptb
+    ];
 
     # #configure swapfiles and other machine specific configuration here: 
     # swapDevices = [{
