@@ -5,12 +5,17 @@
         nixpkgs.url = "nixpkgs/nixos-24.05";
         home-manager.url = "github:nix-community/home-manager/release-24.05";
         home-manager.inputs.nixpkgs.follows = "nixpkgs";
+        hyprland-contrib = {
+            url = "github:hyprwm/contrib";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
 
     outputs = { self, nixpkgs, home-manager, ...}:
         let
             lib = nixpkgs.lib;
             system = "x86_64-linux";
+            inputs = self.inputs;
             pkgs = nixpkgs.legacyPackages.${system};
         in {
 
@@ -20,7 +25,7 @@
             homeConfigurations = {
                 decima = home-manager.lib.homeManagerConfiguration {
                     inherit pkgs;
-                    modules = [./homes/decima.nix];
+                    modules = [./homes/decima/home.nix];
                 };
             };
         
@@ -33,6 +38,7 @@
             };
             zeus = lib.nixosSystem { 
                 inherit system; 
+                specialArgs = {inherit inputs;};
                 modules = [./machines/zeus/configuration.nix]; 
             };
 

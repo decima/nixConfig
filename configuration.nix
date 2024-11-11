@@ -79,7 +79,7 @@
   users.users.decima = {
     isNormalUser = true;
     description = "decima";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "input" ];
     packages = with pkgs; [
     #  thunderbird
     ];
