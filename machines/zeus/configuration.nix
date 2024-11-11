@@ -5,6 +5,8 @@
         ../../commons/development.nix
         ../../configuration.nix
     ];
+
+    
     networking.hostName = "zeus"; # Define your hostname.
 
     boot.loader.systemd-boot.enable = true;
@@ -20,9 +22,15 @@
         dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
         localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
     };
+
+    programs.hyprland = {
+        enable = true;
+    };
+    
     # #configure swapfiles and other machine specific configuration here: 
     # swapDevices = [{
     #     device = "/swapfile";
     #     size = 2 * 1024; # 16GB
     # }];
+
 }
