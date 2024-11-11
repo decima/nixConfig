@@ -1,0 +1,161 @@
+(defpoll SONG :interval "1s" `./scripts/music_info --song`)
+(defpoll ARTIST :interval "1s" `./scripts/music_info --artist`)
+(defpoll COVER :interval "1s" `./scripts/music_info --cover`)
+(defpoll STATUS :interval "1s" `./scripts/music_info --status`)
+(defpoll BATTERY_PERCENT :interval "5s" `./scripts/battery --perc`)
+(defpoll BATTERY_ICON :interval "1s" `./scripts/battery --icon`)
+(defpoll NOTIFICATIONS_COUNT :interval "5s" `swaync-client -c`)
+(defvar CLOCK_DISPLAY 0)
+(defpoll VOLUME :interval "0.1s" './scripts/getVolume @DEFAULT_SINK@')
+
+
+
+(defwidget volumeWidget[]
+  (box
+    :class "volume"
+    :space-evenly false
+    :spacing 2
+    
+    (button
+      :onclick {VOLUME > 0 ? "wpctl set-mute @DEFAULT_SINK@ 1": "wpctl set-mute @DEFAULT_SINK@ 0"}
+      (label :text { VOLUME > 0 ? " ":" " })
+    )
+    (metric
+      :value VOLUME
+      :onchange "wpctl set-mute @DEFAULT_SINK@ 0 && wpctl set-volume @DEFAULT_SINK@ {}%"
+    )
+    
+  )
+)
+
+(defwidget workspaces []
+  (box :class "workspaces"
+    :orientation "h"
+    :space-evenly true
+    :halign "start"
+    :spacing 10
+    (button :class {activeWorkspace==1?"btn-active":""} :onclick "hyprctl dispatch workspace 1" 1)
+    (button :class {activeWorkspace==2?"btn-active":""} :onclick "hyprctl dispatch workspace 2" 2)
+    (button :class {activeWorkspace==3?"btn-active":""} :onclick "hyprctl dispatch workspace 3" 3)
+    (button :class {activeWorkspace==4?"btn-active":""} :onclick "hyprctl dispatch workspace 4" 4)
+    (button :class {activeWorkspace==5?"btn-active":""} :onclick "hyprctl dispatch workspace 5" 5)
+    (button :class {activeWorkspace==6?"btn-active":""} :onclick "hyprctl dispatch workspace 6" 6)
+    (button :class {activeWorkspace==7?"btn-active":""} :onclick "hyprctl dispatch workspace 7" 7)
+    (button :class {activeWorkspace==8?"btn-active":""} :onclick "hyprctl dispatch workspace 8" 8)
+    (button :class {activeWorkspace==9?"btn-active":""} :onclick "hyprctl dispatch workspace 9" 9)
+  )
+)
+
+(defwidget musicWidget []
+  (box :class "dockbox" :hexpand "false" :space-evenly false :halign "end"
+    (box :orientation "h" :spacing 0 :valign "center" :halign "start" :space-evenly "false" :vexpand "false" :hexpand "false"
+      (box :class "album_art" :vexpand "false" :hexpand "false" :style "background-image: url('${COVER}');")
+      (box :class "musicbox" :orientation "v" :spacing 0 :valign "center" :halign "start" :space-evenly "false" :vexpand "false" :hexpand "false"
+        (label :class "song" :halign "start" :wrap "false" :text SONG)
+        (label :class "artist" :halign "start" :wrap "false" :text ARTIST)))
+    (box :class "musicbuttons" :orientation "h" :spacing 10 :valign "center" :halign "end" :space-evenly "false" :vexpand "false" :hexpand "false"
+      (button :class "playerbtn trackbutton" :onclick "scripts/music_info --prev" "󰙣")
+      (button :class "playerbtn playbutton" :onclick "scripts/music_info --toggle" STATUS)
+      (button :class "playerbtn trackbutton" :onclick "scripts/music_info --next" "󰙡" ))))
+
+
+
+(defwidget metric [ value onchange]
+  (box :orientation "h"
+    :class "metric"
+    :space-evenly true
+    (scale :min 0
+      :width 100
+      :max 101
+      :active {onchange != ""}
+      :value value
+    :onchange onchange)))
+
+
+(defpoll windowTitle
+  :interval "1s"
+  './getWindowTitle.sh'
+)
+
+(defpoll activeWorkspace
+  :interval "0.1s"
+  'hyprctl activeworkspace -j|jq ".id"'
+)
+
+
+
+
+
+(defpoll TIME :interval "1s" "date +'%H:%M:%S %p'")
+(defpoll DATE :interval "1s" "date +'%A %d %B'")
+
+(defwidget clock []
+  (box :class "dockbox mainbar" :space-evenly "false" :spacing 5 :halign "end"
+    (systray :class "mysystray" :icon-size 20 :spacing 5)
+    (button :halign "end" :valign "center" :onclick `./scripts/clock &`
+      (stack :selected CLOCK_DISPLAY
+        :halign "end"
+        :transition "slidedown"
+        :same-size true
+        (label :halign "end" :text TIME)
+        (label :halign "end" :text DATE )
+      )
+    )
+    (powermenu)
+    
+  )
+)
+
+(defwidget battery []
+  (box :class "battery-widget"
+    :space-evenly "false"
+    :spacing 2
+    (label :class "battery-icon" :text BATTERY_ICON)
+    (label  :text BATTERY_PERCENT)
+    
+  )
+)
+
+(defwidget powermenu []
+  (box :class "powermenu"
+    :spacing 8
+    :space-evenly "false"
+    (battery)
+    (volumeWidget)
+    (button :visible { NOTIFICATIONS_COUNT > 0}  :onclick `swaync-client -t -sw`
+      (box
+        :space-evenly "false" :spacing 6
+        (label :text "󰻞")
+        (label :text NOTIFICATIONS_COUNT)
+      )
+    )
+    (button :class "lock" :onclick `hyprctl dispatch exec hyprlock`
+      (label  :text "")
+    )
+    (button :class "power" :onclick `hyprctl dispatch exit`
+      (label  :text "󰐥")
+    )
+  )
+)
+
+(defwindow clock
+  :monitor 0
+  :geometry (geometry :x "10px"
+    :y "10px"
+    :height "40px"
+  :anchor "top right")
+  :stacking "bg"
+  :windowtype "dock"
+  :wm-ignore true
+  (clock))
+
+(defwindow music
+  :monitor 0
+  :geometry (geometry :x "10px"
+    :y "60px"
+    :height "60px"
+  :anchor "top right")
+  :stacking "bg"
+  :windowtype "dock"
+  :wm-ignore false
+  (musicWidget))

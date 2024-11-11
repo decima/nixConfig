@@ -1,0 +1,3 @@
+eww update CLOCK_DISPLAY=1 
+sleep 2
+eww update CLOCK_DISPLAY=0

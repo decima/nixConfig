@@ -79,7 +79,7 @@
   users.users.decima = {
     isNormalUser = true;
     description = "decima";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "input" ];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -101,8 +101,14 @@
     gh
     kitty
     htop
+    bc
     vscode
     google-chrome
+    acpi
+    jc
+    socat
+    gnome-tweaks
+    vanilla-dmz
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -134,5 +140,8 @@
 
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
+  
+  #boot.kernelPackages = pkgs.linuxPackages_6_11;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
 }
