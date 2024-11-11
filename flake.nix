@@ -20,7 +20,7 @@
             homeConfigurations = {
                 decima = home-manager.lib.homeManagerConfiguration {
                     inherit pkgs;
-                    modules = [./homes/decima.nix];
+                    modules = [./homes/decima/home.nix];
                 };
             };
         
