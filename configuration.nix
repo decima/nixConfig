@@ -101,6 +101,7 @@
     kitty
     htop
     vscode
+    google-chrome
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
