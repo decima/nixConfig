@@ -1,5 +1,6 @@
 { config, pkgs, ... }:
 let 
+  editor = "vim";
   shellAliases = {
       ".." = "cd ..";
     };
@@ -78,7 +79,7 @@ in
   #  /etc/profiles/per-user/decima/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    EDITOR = editor;
   };
 
   programs.bash  = {
@@ -115,6 +116,7 @@ in
       master = "!git checkout master && git pull && git checkout -";
     };
     extraConfig = {
+      core.editor = editor;
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
       url."git@github.com".insteadOf = "https://github.com";
