@@ -127,6 +127,12 @@ in
 
   };
 
+
+  programs.kitty.enable = true; # required for the default Hyprland config
+  wayland.windowManager.hyprland.enable = true; # enable Hyprland
+
+
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
