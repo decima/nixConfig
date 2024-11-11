@@ -98,6 +98,7 @@
     wget
     gnumake
     git
+    gh
     kitty
     htop
     vscode
