@@ -12,7 +12,7 @@ systemRebuildSpecific:
 updateSystem: 
 	nix flake update
 
-rebuild: homeRebuild systemRebuild
+rebuild: systemRebuild homeRebuild
 
 homeGenerations:
 	home-manager generations

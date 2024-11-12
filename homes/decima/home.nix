@@ -6,6 +6,12 @@ let
     };
 in
 {
+
+  imports = [
+    ./git.nix
+    ./hyprland.nix
+
+  ];
   
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -55,7 +61,6 @@ in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
-      ".wallpapers/1.png" = "./wallpapers/wallhaven-rdkeoq.png";
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
     #   org.gradle.console=verbose
@@ -102,84 +107,20 @@ in
     };
   };
 
-  programs.git = {
-    enable = true;
-    userName = "decima";
-    userEmail = "h.larget@gmail.com";
-    aliases = {
-      logadog = "log --all --decorate --oneline --graph";
-      br = "branch";
-      co = "checkout";
-      st = "status";
-      tempo = "commit -a -m tempo";
-      su = "submodule update --init --recursive";
-      cp = "cherry-pick";
-      please = "push --force-with-lease --force-if-includes";
-      master = "!git checkout master && git pull && git checkout -";
-    };
-    extraConfig = {
-      core.editor = editor;
-      init.defaultBranch = "main";
-      push.autoSetupRemote = true;
-      url."git@github.com".insteadOf = "https://github.com";
-      "tig \"bind\"".generic = [
-        "r !git rebase -i %(commit)^"
-        "p @sh -c \"echo -n %(commit) | xclip\""
-      ]; 
-      
-    };
-
-  };
+ 
   
   nixpkgs.config.allowUnfree = true;
 
 
   programs.vscode = {
-  enable = true;
-  extensions = with pkgs.vscode-extensions; [
-    bbenoist.nix
-  ];
-};
-
-  programs.kitty.enable = true; # required for the default Hyprland config
-  wayland.windowManager.hyprland = {
     enable = true;
-    settings =  {
-      "$mod" = "SUPER";
-      bind = [
-          "$mod, F, exec, firefox"
-          ", Print, exec, grimblast copy area"
-        ]
-        ++ (
-          # workspaces
-          # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
-          builtins.concatLists (builtins.genList (i:
-              let ws = i + 1;
-              in [
-                "$mod, code:1${toString i}, workspace, ${toString ws}"
-                "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
-              ]
-            )
-            9)
-        );
-    };
-    plugins = [
-      pkgs.hyprlandPlugins.hyprbars
+    extensions = with pkgs.vscode-extensions; [
+      bbenoist.nix
     ];
-
   };
-
-  services.hyprpaper = {
-    enable = true;
-    ipc = "on";
-    splash = false;
-    splash_offset = 2.0;
-    settings = {
-        splash = false;
-        wallpaper = [
-          ",/home/decima/.wallpapers/1.png"
-        ];
-  };
+  
+  programs.kitty.enable = true; # required for the default Hyprland config
+  
 
 
   # Let Home Manager install and manage itself.
