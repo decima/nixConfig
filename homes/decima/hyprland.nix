@@ -3,6 +3,7 @@
     home.file = {
       ".wallpapers/1.png".source = ./wallpapers/wallhaven-rdkeoq.png;
       ".wallpapers/2.png".source = ./wallpapers/wallhaven-qd6175.png;
+      ".wallpapers/3.png".source = ./wallpapers/wallhaven-5d2wl8.png;
       ".config/waybar/config.jsonc".source = ./waybar.jsonc;
       ".config/waybar/style.css".source = ./waybar.css;
     };
@@ -195,9 +196,9 @@
     services.hyprpaper = {
         enable = true;
         settings = {
-            preload = "/home/decima/.wallpapers/2.png";
+            preload = "/home/decima/.wallpapers/3.png";
             wallpaper = [
-            ",/home/decima/.wallpapers/2.png"
+            ",/home/decima/.wallpapers/3.png"
             ];
         };
     };
