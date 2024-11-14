@@ -5,9 +5,6 @@ limitBottom=2
 moveStep=50
 resizeStep=$moveStep
 currentWindow=$(hyprctl activewindow -j)
-isFloating=$(echo $currentWindow|jq -r ".floating")
-isFullscreen=$(echo $currentWindow|jq -r ".fullscreen")
-
 currentWorkspace=$(hyprctl activeworkspace -j)
 monitorId=`echo $currentWorkspace|jq -r ".monitorID"`
 currentMonitorList=$(hyprctl monitors $monitorId -j)
@@ -28,41 +25,21 @@ action=$1
 arg=$2
 
 splash() {
-    
 	if [[ "$1" == "left" ]]; then
-        if [[ "$isFloating" == "true" ]]; then
-            hyprctl dispatch moveactive exact $limitLeft $limitTop
-            hyprctl dispatch resizeactive exact $(echo "$currentMonitorWidth/2-$limitLeft"|bc) $(echo "$currentMonitorHeight-$limitTop-$limitBottom"|bc)
-        else
-            hyprctl dispatch movefocus l
-        fi
+        hyprctl dispatch resizeactive exact $(echo "$currentMonitorWidth/2-$limitLeft"|bc) $(echo "$currentMonitorHeight-$limitTop-$limitBottom"|bc)
+        hyprctl dispatch moveactive exact $limitLeft $limitTop
 
     elif [[ "$1" == "right" ]];then
-        if [[ "$isFloating" == "true" ]]; then
-            hyprctl dispatch moveactive exact 50% $limitTop
-            hyprctl dispatch resizeactive exact $(echo "$currentMonitorWidth/2-$limitLeft"|bc) $(echo "$currentMonitorHeight-$limitTop-$limitBottom"|bc)
-        else
-            hyprctl dispatch movefocus r
-        fi
+         hyprctl dispatch resizeactive exact $(echo "$currentMonitorWidth/2-$limitLeft"|bc) $(echo "$currentMonitorHeight-$limitTop-$limitBottom"|bc)
+        hyprctl dispatch moveactive exact 50% $limitTop
+    
     elif [[ "$1" == "top" ]];then
-        if [[ "$isFloating" == "true" ]]; then
-            hyprctl dispatch resizeactive exact $(echo "$currentMonitorWidth-$limitLeft-$limitRight"|bc) $(echo "$currentMonitorHeight-$limitTop-$limitBottom"|bc)
-            hyprctl dispatch moveactive exact $limitLeft $limitTop
-        else
-            hyprctl dispatch movefocus u
-        fi
-
+        hyprctl dispatch resizeactive exact $(echo "$currentMonitorWidth-$limitLeft-$limitRight"|bc) $(echo "$currentMonitorHeight-$limitTop-$limitBottom"|bc)
+        hyprctl dispatch moveactive exact $limitLeft $limitTop
 
     elif [[ "$1" == "bottom" ]];then
-        #hyprctl dispatch resizeactive exact 60% 60%
-        #hyprctl dispatch centerwindow
-        if [[ "$isFloating" == "false" ]]; then
-            hyprctl dispatch movefocus d
-        else
-            hyprctl dispatch setfloating
-            hyprctl dispatch resizeactive exact 60% 60%
-            hyprctl dispatch centerwindow
-        fi
+        hyprctl dispatch resizeactive exact 60% 60%
+        hyprctl dispatch centerwindow
     fi
 }
 
@@ -93,16 +70,6 @@ move(){
             hyprctl dispatch moveactive 0 $(echo " -$windowY + $windowMaxY"|bc)
         fi  
 
-    fi
-}
-
-state(){
-    if [[ "$1" == "tiled" ]]; then
-        hyprctl dispatch settiled
-    elif [[ "$1" == "floating" ]];then
-        hyprctl dispatch setfloating
-    else 
-        hyprctl dispatch togglefloating
     fi
 }
 
@@ -162,8 +129,6 @@ elif [[ "$action" == "splash" ]]; then
     splash $arg
 elif [[ "$action" == "move" ]]; then
     move $arg
-elif [[ "$action" == "state" ]]; then
-    state $arg
 elif [[ "$action" == "expand" ]]; then
     expand $arg
 else

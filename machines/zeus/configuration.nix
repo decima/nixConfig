@@ -12,6 +12,7 @@
     
     networking.hostName = "zeus"; # Define your hostname.
 
+
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
 

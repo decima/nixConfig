@@ -1,0 +1,87 @@
+$primaryColor: #fbdccb;
+$primaryDarkerColor: #dbbcab;
+window, box,button {
+  all: unset; // Unsets everything so you can style everything from scratch
+  font-family: 'SpaceMono Nerd Font';
+}
+
+menu{
+  color: $primaryDarkerColor;
+  background-color: black;
+  font-size: 14px;
+
+  >:hover{
+    background-color: $primaryColor;
+    color: black;
+  }
+}
+
+
+.workspaces button:hover {
+  color: $primaryDarkerColor;
+}
+
+.dockbox {
+	background-color: rgba(0,0,0,0.5);
+	border: 1px solid rgba(0,0,0,0.7);
+  color: $primaryColor;
+	border-radius: 12px;
+}
+
+.album_art {
+  background-repeat: no-repeat;
+  background-size: 60px;
+  min-height: 60px;
+  min-width: 60px;
+  margin: 4px;
+  border-radius: 8px;
+}
+
+.musicbox {
+margin-left : 5px;
+}
+
+
+.song {
+font-size : 12px;
+font-weight : bold;
+}
+
+.artist {
+font-size : 14px;
+font-weight : bold;
+}
+
+.musicbuttons {
+  padding: 0px 10px;
+  margin: 10px;
+}
+  
+
+.playerbtn {
+  font-size: 32px;;
+}
+
+.clockbox {
+	margin : 0px 0px 0px 15px;
+}
+
+.time {
+	font-size : 18px;
+	font-weight : bold;
+}
+
+.date {
+	font-size : 8px;
+	font-weight : bold;
+}
+
+
+.mainbar{
+  padding: 0px 10px;
+}
+
+
+.powermenu{
+  font-size: 24px;
+}

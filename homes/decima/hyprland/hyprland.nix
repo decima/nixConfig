@@ -1,20 +1,26 @@
 { config, pkgs, ... }:
 {
     imports = [
-        ./lockScreens/hyprlock.nix
-        ./wallpapers/wallpapers.nix
-        ./notifications/mako/mako.nix
-        ./bars/eww/eww.nix
-        #./appLaunchers/walker/walker.nix
-        ./appLaunchers/nwg-drawer/nwg-drawer.nix
+        ../eww/eww.nix
     ];
 
+    home.file = {
+      ".wallpapers/1.png".source = ./wallpapers/wallhaven-rdkeoq.png;
+      ".wallpapers/2.png".source = ./wallpapers/wallhaven-qd6175.png;
+      ".wallpapers/3.png".source = ./wallpapers/wallhaven-5d2wl8.png;
+      ".wallpapers/4.png".source = ./wallpapers/wallhaven-nkz927.png;
+    };
+
     home.packages = with pkgs; [
-        xfce.thunar
-        networkmanagerapplet
+        rofi
+        
         (writeShellScriptBin "awt" (builtins.readFile ./scripts/awt.sh))    
     ];
 
+    programs.rofi = {
+        enable = true;
+        theme = "Arc-Dark";
+    };
 
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.plugins = [
@@ -22,11 +28,7 @@
         pkgs.hyprlandPlugins.hyprexpo
     ];
 
-    wayland.windowManager.hyprland.settings."exec-once" = [
-        "nm-applet --indicator"
-    ];
-
-    wayland.windowManager.hyprland.settings.plugins ={
+     wayland.windowManager.hyprland.settings.plugins ={
         # hyprbars={
         #     # example config
         #     bar_height = 24;
@@ -45,19 +47,29 @@
             gesture_positive = true; # positive = swipe down. Negative = swipe up.
 
         };
-    };
+     };
 
 
     wayland.windowManager.hyprland.settings.monitor = [
         "eDP-1, 1920x1080, 0x0, 1"
-        ", preferred, auto, 1"
-
-
     ];
     
     wayland.windowManager.hyprland.settings.windowrulev2 = [
-        #"float, class:.*"
+        "float, class:xdg-desktop-portal-gtk"
+        "float, class:Rofi"
+        #"size 300 300, class:Rofi"
+        "center, class:Rofi"
+        "stayfocused, class:Rofi"
+        "plugin:hyprbars:nobar, class:Rofi"
+        "plugin:hyprbars:nobar, class:xdg-desktop-portal-gtk"
+        "float, class:.*"
         "size 800 600, class:xdg-desktop-portal-gtk"
+    ];
+
+
+
+    wayland.windowManager.hyprland.settings."exec-once" = [
+        "hyprpaper"
     ];
 
 
@@ -68,18 +80,19 @@
         "$moveStep" = "50";
         "$terminal" = "kitty";
         "$fileManager" = "thunar";
+        "$menu" = "rofi -show drun";
         "$mod" = "SUPER";
 
         general = { 
-            gaps_in = 4;
-            gaps_out = "60,2,2,2";
+            gaps_in = 5;
+            gaps_out = "34,4,4,4";
 
-            border_size = 4;
+            border_size = 6;
 
             # https://wiki.hyprland.org/Configuring/Variables/#variable-types for info about colors
             #"col.active_border" = "rgba(ffffff66) rgba(00000066) 45deg";
-            "col.inactive_border" = "rgba(ffffff99) rgba(ffffff66) 45deg";
-            "col.active_border" = "rgba(595959aa)";
+            "col.active_border" = "rgba(ffffff99) rgba(ffffff66) 45deg";
+            "col.inactive_border" = "rgba(595959aa)";
 
             # Set to true enable resizing windows by clicking and dragging on borders and gaps
             resize_on_border = true; 
@@ -92,19 +105,16 @@
         };
 
         decoration ={
-            shadow = {
-                enabled = false;
-                range = 4;
-                render_power = 3;
-                color = "rgba(1a1a1aee)";
-
-            };
             rounding = 4;
 
             # Change transparency of focused and unfocused windows
             active_opacity = 1.0;
             inactive_opacity = 1.0;
 
+            drop_shadow = false;
+            shadow_range = 4;
+            shadow_render_power = 3;
+            "col.shadow" = "rgba(1a1a1aee)";
 
             # https://wiki.hyprland.org/Configuring/Variables/#blur
             blur = {
@@ -120,18 +130,6 @@
         };
     };
 
-    
-     wayland.windowManager.hyprland.settings.workspace=[
-        "1,monitor:eDP-1"
-        "2,monitor:eDP-1"
-        "3,monitor:eDP-1"
-        "4,monitor:eDP-1"
-        "5,monitor:eDP-1"
-        "6,monitor:eDP-1"
-        "7,monitor:eDP-1"
-        "8,monitor:eDP-1"
-        "9,monitor:eDP-1"
-     ];
     wayland.windowManager.hyprland.settings.bindl=[
         ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     ];
@@ -171,7 +169,6 @@
         "$mod, Right, exec, awt splash right"
         "$mod, Up, exec, awt splash top"
         "$mod, Down, exec, awt splash bottom"
-        "$mod, T, exec, awt state toggle"
     
         "ALT, Tab, cyclenext,"
         "ALT, Tab, bringactivetotop,"
@@ -180,8 +177,7 @@
         # workspaces
         # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
         builtins.concatLists (builtins.genList (i:
-            let 
-                ws = i + 1;
+            let ws = i + 1;
             in [
                 "$mod, code:1${toString i}, workspace, ${toString ws}"
                 "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
@@ -190,7 +186,17 @@
             9)
     );
 
-
+    services.hyprpaper = {
+        enable = true;
+        settings = {
+            preload = [
+                "/home/decima/.wallpapers/4.png"
+            ];
+            wallpaper = [
+            ",/home/decima/.wallpapers/4.png"
+            ];
+        };
+    };
 
 
 }
