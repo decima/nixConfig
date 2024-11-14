@@ -101,6 +101,7 @@
     gh
     kitty
     htop
+    bc
     vscode
     google-chrome
   ];
@@ -134,5 +135,8 @@
 
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
+  
+  #boot.kernelPackages = pkgs.linuxPackages_6_11;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
 }

@@ -9,7 +9,8 @@ in
 
   imports = [
     ./git.nix
-    ./hyprland.nix
+    ./hyprland/hyprland.nix
+    ./kitty/kitty.nix
 
   ];
   
@@ -40,12 +41,6 @@ in
     # # fonts?
     # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
 
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
     (writeShellScriptBin "jjqn" ''
       jq --unbuffered -R -r ". as \$line | try fromjson catch {\"jjq_error\": \$line}" | jq --unbuffered "''${1:-.}"
     '')
@@ -117,10 +112,7 @@ in
     extensions = with pkgs.vscode-extensions; [
       bbenoist.nix
     ];
-  };
-  
-  programs.kitty.enable = true; # required for the default Hyprland config
-  
+  };  
 
 
   # Let Home Manager install and manage itself.
