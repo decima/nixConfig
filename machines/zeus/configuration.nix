@@ -6,6 +6,7 @@
         ../../commons/gaming.nix
         ../../commons/development.nix
         ../../configuration.nix
+        ./graphics.nix
     ];
 
     
