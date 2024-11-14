@@ -1,8 +1,8 @@
 { config, pkgs, inputs, ... }:
 {
-    hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
+    hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
 
-    hardware.graphics = {
+    hardware.opengl = {
         enable = true;
     };
 
