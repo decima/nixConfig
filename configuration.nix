@@ -101,6 +101,7 @@
     gh
     kitty
     htop
+    bc
     vscode
     google-chrome
   ];

@@ -1,0 +1,171 @@
+(defwidget bar []
+  (centerbox :orientation "h"
+    (workspaces)
+    (centerstuff)
+    (sidestuff)
+  )
+)
+
+(defwindow music
+  :monitor 0
+  :geometry (geometry :x "990px"
+    :y "20px"
+    :width "400px"
+    :height "60px"
+  :anchor "top left")
+  :stacking "fg"
+  :reserve (struts :distance "80px" :side "top")
+  :windowtype "dock"
+  :wm-ignore false
+  (music))
+
+(defpoll SONG :interval "1s" `./scripts/music_info --song`)
+(defpoll ARTIST :interval "1s" `./scripts/music_info --artist`)
+(defpoll COVER :interval "1s" `./scripts/music_info --cover`)
+(defpoll STATUS :interval "1s" `./scripts/music_info --status`)
+
+(defwidget centerstuff []
+  (box :class "centerstuff" :orientation "h" :spacing 20
+    (box windowTitle)
+  )
+)
+
+(defwidget sidestuff []
+  (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
+    (systray)
+    (volume)
+    time
+    
+  ))
+
+(defwidget volume[]
+  (box
+    :class "volume"
+    
+    :orientation "h"
+    :space-evenly false
+    :halign "start"
+    :spacing 2
+    (button
+      :class "label"
+      :onclick {volume > 0 ? "wpctl set-volume @DEFAULT_SINK@ 0%": "wpctl set-volume @DEFAULT_SINK@ 100%"}
+      { volume > 0 ? " ":" " }
+    )
+    (metric
+      :value volume
+      :onchange "wpctl set-volume @DEFAULT_SINK@ {}%"
+    )
+    
+  )
+)
+
+(defwidget workspaces []
+  (box :class "workspaces"
+    :orientation "h"
+    :space-evenly true
+    :halign "start"
+    :spacing 10
+    (button :class {activeWorkspace==1?"btn-active":""} :onclick "hyprctl dispatch workspace 1" 1)
+    (button :class {activeWorkspace==2?"btn-active":""} :onclick "hyprctl dispatch workspace 2" 2)
+    (button :class {activeWorkspace==3?"btn-active":""} :onclick "hyprctl dispatch workspace 3" 3)
+    (button :class {activeWorkspace==4?"btn-active":""} :onclick "hyprctl dispatch workspace 4" 4)
+    (button :class {activeWorkspace==5?"btn-active":""} :onclick "hyprctl dispatch workspace 5" 5)
+    (button :class {activeWorkspace==6?"btn-active":""} :onclick "hyprctl dispatch workspace 6" 6)
+    (button :class {activeWorkspace==7?"btn-active":""} :onclick "hyprctl dispatch workspace 7" 7)
+    (button :class {activeWorkspace==8?"btn-active":""} :onclick "hyprctl dispatch workspace 8" 8)
+    (button :class {activeWorkspace==9?"btn-active":""} :onclick "hyprctl dispatch workspace 9" 9)
+  )
+)
+
+(defwidget musicWidget []
+  (box :class "dockbox"
+    (box :orientation "h" :spacing 0 :valign "center" :halign "start" :space-evenly "false" :vexpand "false" :hexpand "false"
+      (box :class "album_art" :vexpand "false" :hexpand "false" :style "background-image: url('${COVER}');")
+      (box :class "musicbox" :orientation "v" :spacing 0 :valign "center" :halign "start" :space-evenly "false" :vexpand "false" :hexpand "false"
+        (label :class "song" :halign "start" :wrap "false" :limit-width 20 :text SONG)
+        (label :class "artist" :halign "start" :wrap "false" :limit-width 20 :text ARTIST)))
+    (box :class "musicbuttons" :orientation "h" :spacing 10 :valign "center" :halign "end" :space-evenly "false" :vexpand "false" :hexpand "false"
+      (button :class "playerbtn trackbutton" :onclick "scripts/music_info --prev" "󰙣")
+      (button :class "playerbtn playbutton" :onclick "scripts/music_info --toggle" STATUS)
+      (button :class "playerbtn trackbutton" :onclick "scripts/music_info --next" "󰙡" ))))
+
+
+
+(defwidget metric [ value onchange]
+  (box :orientation "h"
+    :class "metric"
+    :space-evenly false
+    (scale :min 0
+      :max 101
+      :active {onchange != ""}
+      :value value
+    :onchange onchange)))
+
+
+(defpoll windowTitle
+  :interval "1s"
+  './getWindowTitle.sh'
+)
+
+(defpoll activeWorkspace
+  :interval "0.1s"
+  'hyprctl activeworkspace -j|jq ".id"'
+)
+
+(deflisten music :initial ""
+"playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
+
+(defpoll volume :interval "0.2s"
+'./getvol.sh')
+
+(defpoll time :interval "10s"
+"date '+%H:%M %b %d, %Y'")
+
+(defwindow bar
+  :monitor 0
+  :windowtype "dock"
+  :geometry (geometry :x "0%"
+    :y "0%"
+    :width "50%"
+    :height "24px"
+  :anchor "top center")
+  :reserve (struts :side "top" :distance "4%")
+  (bar))
+
+
+(defwindow music
+  :monitor 0
+  :geometry (geometry :x "10px"
+    :y "60px"
+    :width "400px"
+    :height "60px"
+  :anchor "top right")
+  :stacking "bg"
+  :reserve (struts :distance "80px" :side "top")
+  :windowtype "dock"
+  :wm-ignore false
+  (musicWidget))
+
+(defpoll TIME :interval "1s" `date +\"%I:%M:%S %p\"`)
+(defpoll DATE :interval "1s" `date +\"%A %d %B\"`)
+
+(defwidget clock []
+  (box :class "dockbox"
+    (box :class "clockbox" :orientation "h" :spacing 0 :valign "center" :halign "start" :space-evenly "false" :vexpand "false" :hexpand "false"
+      (label :class "time" :halign "start" :wrap "true" :limit-width 25 :text TIME)
+      (label :class "date" :halign "start" :wrap "true" :limit-width 25 :text DATE))
+  )
+)
+
+(defwindow clock
+  :monitor 0
+  :geometry (geometry :x "10px"
+    :y "10px"
+    :width "50%"
+    :height "40px"
+  :anchor "top right")
+  :stacking "bg"
+  :reserve (struts :distance "80px" :side "top")
+  :windowtype "dock"
+  :wm-ignore false
+  (clock))

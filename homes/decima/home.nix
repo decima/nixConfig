@@ -9,7 +9,7 @@ in
 
   imports = [
     ./git.nix
-    ./hyprland.nix
+    ./hyprland/hyprland.nix
 
   ];
   

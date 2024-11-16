@@ -1,15 +1,19 @@
 { config, pkgs, ... }:
 {
+    imports = [
+       # ../eww/eww.nix
+    ];
+
     home.file = {
       ".wallpapers/1.png".source = ./wallpapers/wallhaven-rdkeoq.png;
       ".wallpapers/2.png".source = ./wallpapers/wallhaven-qd6175.png;
       ".wallpapers/3.png".source = ./wallpapers/wallhaven-5d2wl8.png;
-      ".config/waybar/config.jsonc".source = ./waybar.jsonc;
-      ".config/waybar/style.css".source = ./waybar.css;
+      ".wallpapers/4.png".source = ./wallpapers/wallhaven-nkz927.png;
     };
 
     home.packages = with pkgs; [
         rofi
+        eww
     ];
 
     programs.rofi = {
@@ -65,13 +69,15 @@
 
     wayland.windowManager.hyprland.settings."exec-once" = [
         "hyprpaper"
-        "waybar"
+        #"eww daemon"
+        #"eww open bar"
     ];
 
 
     wayland.windowManager.hyprland.settings = {
          # "$deltaWindowSize" = "54"; # with hyprbars
-        "$deltaWindowSize"="34"; # with waybar
+        #"$deltaWindowSize"="34"; # with waybar
+        "$deltaWindowSize" = 60;
         "$moveStep" = "50";
         "$terminal" = "kitty";
         "$fileManager" = "thunar";
@@ -80,12 +86,13 @@
 
         general = { 
             gaps_in = 5;
-            gaps_out = 15;
+            gaps_out = "34,4,4,4";
 
-            border_size = 4;
+            border_size = 6;
 
             # https://wiki.hyprland.org/Configuring/Variables/#variable-types for info about colors
-            "col.active_border" = "rgba(9cE0C8ff) rgba(B594B5ff) 45deg";
+            #"col.active_border" = "rgba(ffffff66) rgba(00000066) 45deg";
+            "col.active_border" = "rgba(ffffff99) rgba(ffffff66) 45deg";
             "col.inactive_border" = "rgba(595959aa)";
 
             # Set to true enable resizing windows by clicking and dragging on borders and gaps
@@ -133,6 +140,23 @@
         ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
         ",XF86MonBrightnessUp, exec, light -A 5"
         ",XF86MonBrightnessDown, exec, light -U 5"
+
+        "$mod Shift, Left, moveactive, -$moveStep 0"
+        "$mod Shift, Right, moveactive, $moveStep 0"
+        "$mod Shift, Up, moveactive, 0 -$moveStep"
+        "$mod Shift, Down, moveactive, 0 $moveStep"
+        "$mod Control_L, Left, resizeactive, $moveStep 0"
+        "$mod Control_L, Left, moveactive, -$moveStep 0"
+        "$mod Control_L, Right, resizeactive, $moveStep 0"
+        "$mod Control_L, Up, resizeactive, 0 $moveStep"
+        "$mod Control_L, Up, moveactive, 0 -$moveStep"
+        "$mod Control_L, Down, resizeactive, 0 $moveStep"
+        "$mod Shift Control_L, Right, resizeactive, -50 0"
+        "$mod Shift Control_L, Right, moveactive, 50 0"
+        "$mod Shift Control_L, Left, resizeactive, -50 0"
+        "$mod Shift Control_L, Down, resizeactive, 0 -50"
+        "$mod Shift Control_L, Down, moveactive, 0 50"
+        "$mod Shift Control_L, Up, resizeactive, 0 -50"
     ];
     
     wayland.windowManager.hyprland.settings.bind = [
@@ -158,27 +182,9 @@
 
         "$mod, Down, resizeactive, exact 60% 60%"
         "$mod, Down, centerwindow,"
-        "$mod Shift, Left, moveactive, -$moveStep 0"
-        "$mod Shift, Right, moveactive, $moveStep 0"
-        "$mod Shift, Up, moveactive, 0 -$moveStep"
-        "$mod Shift, Down, moveactive, 0 $moveStep"
-        "$mod Control_L, Left, resizeactive, $moveStep 0"
-        "$mod Control_L, Left, moveactive, -$moveStep 0"
-        "$mod Control_L, Right, resizeactive, $moveStep 0"
-        "$mod Control_L, Up, resizeactive, 0 $moveStep"
-        "$mod Control_L, Up, moveactive, 0 -$moveStep"
-        "$mod Control_L, Down, resizeactive, 0 $moveStep"
-
-
-        "$mod Shift Control_L, Right, resizeactive, -50 0"
-        "$mod Shift Control_L, Right, moveactive, 50 0"
-        "$mod Shift Control_L, Left, resizeactive, -50 0"
-        "$mod Shift Control_L, Down, resizeactive, 0 -50"
-        "$mod Shift Control_L, Down, moveactive, 0 50"
-        "$mod Shift Control_L, Up, resizeactive, 0 -50"
+    
         "ALT, Tab, cyclenext,"
         "ALT, Tab, bringactivetotop,"
-        ",$mod, hyprexpo:expo, toggle"
         ]
     ++ (
         # workspaces
@@ -196,9 +202,11 @@
     services.hyprpaper = {
         enable = true;
         settings = {
-            preload = "/home/decima/.wallpapers/3.png";
+            preload = [
+                "/home/decima/.wallpapers/4.png"
+            ];
             wallpaper = [
-            ",/home/decima/.wallpapers/3.png"
+            ",/home/decima/.wallpapers/4.png"
             ];
         };
     };
