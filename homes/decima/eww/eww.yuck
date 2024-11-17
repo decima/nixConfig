@@ -2,6 +2,8 @@
 (defpoll ARTIST :interval "1s" `./scripts/music_info --artist`)
 (defpoll COVER :interval "1s" `./scripts/music_info --cover`)
 (defpoll STATUS :interval "1s" `./scripts/music_info --status`)
+(defpoll BATTERY_PERCENT :interval "5s" `./scripts/battery --perc`)
+(defpoll BATTERY_ICON :interval "1s" `./scripts/battery --icon`)
 (defpoll clock_current_display :interval "2s" `eww update clock_current_display=0 & echo 0 `)
 
 (defwidget centerstuff []
@@ -116,14 +118,31 @@
         (label :halign "end" :text DATE )
       )
     )
+    (battery)
     (powermenu)
+  )
+)
+
+(defwidget battery []
+  (box :class "battery"
+    (label :class "battery-icon" :text BATTERY_ICON)
+    (label  :text BATTERY_PERCENT)
+
   )
 )
 
 (defwidget powermenu []
   (box :class "powermenu"
+  :spacing 2
+
+    (button :class "notifications" :onclick `swaync-client -t -sw`
+      (label  :text "󰭹 ")
+    )
+    (button :class "notifications" :onclick `swaync-client -t -sw`
+      (label  :text "󰭹 ")
+    )
     (button :class "power" :onclick `hyprctl dispatch exit`
-      (label  :text "󰐥")
+      (label  :text "󰐥 ")
     )
   )
 )

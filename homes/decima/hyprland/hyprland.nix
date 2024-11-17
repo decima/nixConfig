@@ -1,19 +1,15 @@
 { config, pkgs, ... }:
 {
     imports = [
+        ./hyprlock.nix
+        ./hyprpaper.nix
+        ./swaync.nix
         ../eww/eww.nix
     ];
 
-    home.file = {
-      ".wallpapers/1.png".source = ./wallpapers/wallhaven-rdkeoq.png;
-      ".wallpapers/2.png".source = ./wallpapers/wallhaven-qd6175.png;
-      ".wallpapers/3.png".source = ./wallpapers/wallhaven-5d2wl8.png;
-      ".wallpapers/4.png".source = ./wallpapers/wallhaven-nkz927.png;
-    };
-
     home.packages = with pkgs; [
         rofi
-        
+        swaynotificationcenter
         (writeShellScriptBin "awt" (builtins.readFile ./scripts/awt.sh))    
     ];
 
@@ -67,12 +63,6 @@
     ];
 
 
-
-    wayland.windowManager.hyprland.settings."exec-once" = [
-        "hyprpaper"
-    ];
-
-
     wayland.windowManager.hyprland.settings = {
          # "$deltaWindowSize" = "54"; # with hyprbars
         #"$deltaWindowSize"="34"; # with waybar
@@ -105,16 +95,19 @@
         };
 
         decoration ={
+            shadow = {
+                enabled = false;
+                range = 4;
+                render_power = 3;
+                color = "rgba(1a1a1aee)";
+
+            };
             rounding = 4;
 
             # Change transparency of focused and unfocused windows
             active_opacity = 1.0;
             inactive_opacity = 1.0;
 
-            drop_shadow = false;
-            shadow_range = 4;
-            shadow_render_power = 3;
-            "col.shadow" = "rgba(1a1a1aee)";
 
             # https://wiki.hyprland.org/Configuring/Variables/#blur
             blur = {
@@ -186,17 +179,7 @@
             9)
     );
 
-    services.hyprpaper = {
-        enable = true;
-        settings = {
-            preload = [
-                "/home/decima/.wallpapers/4.png"
-            ];
-            wallpaper = [
-            ",/home/decima/.wallpapers/4.png"
-            ];
-        };
-    };
+
 
 
 }

@@ -17,7 +17,7 @@
     boot.loader.efi.canTouchEfiVariables = true;
 
     environment.systemPackages = with pkgs; [
-
+        libnotify
         xfce.thunar
         waybar
         inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
@@ -25,9 +25,8 @@
 
     programs.light.enable = true;
   
-    programs.hyprland = {
-        enable = true;
-    };
+    programs.hyprland.enable = true;
+    programs.hyprlock.enable = true;
 
     fonts.packages = with pkgs; [
         (nerdfonts.override { fonts = [ "Ubuntu" "FiraCode" "DroidSansMono" "SpaceMono" ]; })

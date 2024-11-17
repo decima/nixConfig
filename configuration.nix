@@ -104,6 +104,8 @@
     bc
     vscode
     google-chrome
+    acpi
+    jc
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
