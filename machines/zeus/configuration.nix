@@ -5,6 +5,7 @@
         ../../commons/multimedia.nix
         ../../commons/gaming.nix
         ../../commons/development.nix
+        ../../commons/temp.nix
         ../../configuration.nix
         ./graphics.nix
     ];
@@ -17,21 +18,28 @@
     boot.loader.efi.canTouchEfiVariables = true;
 
     environment.systemPackages = with pkgs; [
-
-        xfce.thunar
+        libnotify
         waybar
         inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
+        transmission_4-qt
     ];
 
     programs.light.enable = true;
   
-    programs.hyprland = {
-        enable = true;
-    };
+    programs.hyprland.enable = true;
+    programs.hyprlock.enable = true;
 
     fonts.packages = with pkgs; [
-        (nerdfonts.override { fonts = [ "Ubuntu" "FiraCode" "DroidSansMono" "SpaceMono" ]; })
+        nerd-fonts.ubuntu
+        nerd-fonts.fira-code
+        nerd-fonts.droid-sans-mono
+        nerd-fonts.space-mono
     ];
+
+
+    services.udev.extraRules=''
+        KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="100", TAG+="uaccess", TAG+="udev-acl"
+    '';
 
     
     # #configure swapfiles and other machine specific configuration here: 

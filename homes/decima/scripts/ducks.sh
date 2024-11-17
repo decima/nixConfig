@@ -1,0 +1,1 @@
+du -hsx ${1:-.}/* | sort -rh | head -10

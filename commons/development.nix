@@ -2,17 +2,24 @@
 {
 
     environment.systemPackages = with pkgs; [
+        
+        openssl
+        # utils
+        insomnia
+
+        # golang
         go
         jetbrains.goland
 
         ### php 8.3
-        php83
-        php83Packages.composer
+        #php83
+        #php83Packages.composer
 
         ### php 8.4
-        # php84
-        # php84Packages.composer
+        php84
+        php84Packages.composer
 
+    
         symfony-cli
         jetbrains.phpstorm
 
@@ -22,7 +29,6 @@
         nodePackages.npm
         nodePackages.yarn
         nodePackages.sass
-
     ];
 
     programs.adb.enable = true;

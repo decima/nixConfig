@@ -38,18 +38,16 @@ in
     # # "Hello, world!" when run.
     tig
     jq
+    libheif
+    gdrive3
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
     # # fonts?
     # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    (writeShellScriptBin "jjqn" ''
-      jq --unbuffered -R -r ". as \$line | try fromjson catch {\"jjq_error\": \$line}" | jq --unbuffered "''${1:-.}"
-    '')
-    (writeShellScriptBin "kmlt" ''
-    	curl -s https://kaamelott.chaudie.re/api/random | jjqn
-    '')
+    (writeShellScriptBin "ducks" (builtins.readFile ./scripts/ducks.sh))    
+    (writeShellScriptBin "jjqn" (builtins.readFile ./scripts/jjqn.sh))
+    (writeShellScriptBin "kmlt" (builtins.readFile ./scripts/kmlt.sh))
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
