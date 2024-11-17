@@ -10,6 +10,7 @@ in
   imports = [
     ./git.nix
     ./hyprland/hyprland.nix
+    ./kitty/kitty.nix
 
   ];
   
@@ -111,10 +112,7 @@ in
     extensions = with pkgs.vscode-extensions; [
       bbenoist.nix
     ];
-  };
-  
-  programs.kitty.enable = true; # required for the default Hyprland config
-  
+  };  
 
 
   # Let Home Manager install and manage itself.

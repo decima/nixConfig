@@ -1,28 +1,8 @@
-(defwidget bar []
-  (centerbox :orientation "h"
-    (workspaces)
-    (centerstuff)
-    (sidestuff)
-  )
-)
-
-(defwindow music
-  :monitor 0
-  :geometry (geometry :x "990px"
-    :y "20px"
-    :width "400px"
-    :height "60px"
-  :anchor "top left")
-  :stacking "fg"
-  :reserve (struts :distance "80px" :side "top")
-  :windowtype "dock"
-  :wm-ignore false
-  (music))
-
 (defpoll SONG :interval "1s" `./scripts/music_info --song`)
 (defpoll ARTIST :interval "1s" `./scripts/music_info --artist`)
 (defpoll COVER :interval "1s" `./scripts/music_info --cover`)
 (defpoll STATUS :interval "1s" `./scripts/music_info --status`)
+(defpoll clock_current_display :interval "2s" `eww update clock_current_display=0 & echo 0 `)
 
 (defwidget centerstuff []
   (box :class "centerstuff" :orientation "h" :spacing 20
@@ -78,12 +58,12 @@
 )
 
 (defwidget musicWidget []
-  (box :class "dockbox"
+  (box :class "dockbox" :hexpand "false" :space-evenly false :halign "end"
     (box :orientation "h" :spacing 0 :valign "center" :halign "start" :space-evenly "false" :vexpand "false" :hexpand "false"
       (box :class "album_art" :vexpand "false" :hexpand "false" :style "background-image: url('${COVER}');")
       (box :class "musicbox" :orientation "v" :spacing 0 :valign "center" :halign "start" :space-evenly "false" :vexpand "false" :hexpand "false"
-        (label :class "song" :halign "start" :wrap "false" :limit-width 20 :text SONG)
-        (label :class "artist" :halign "start" :wrap "false" :limit-width 20 :text ARTIST)))
+        (label :class "song" :halign "start" :wrap "false" :text SONG)
+        (label :class "artist" :halign "start" :wrap "false" :text ARTIST)))
     (box :class "musicbuttons" :orientation "h" :spacing 10 :valign "center" :halign "end" :space-evenly "false" :vexpand "false" :hexpand "false"
       (button :class "playerbtn trackbutton" :onclick "scripts/music_info --prev" "󰙣")
       (button :class "playerbtn playbutton" :onclick "scripts/music_info --toggle" STATUS)
@@ -112,8 +92,6 @@
   'hyprctl activeworkspace -j|jq ".id"'
 )
 
-(deflisten music :initial ""
-"playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
 
 (defpoll volume :interval "0.2s"
 './getvol.sh')
@@ -121,39 +99,32 @@
 (defpoll time :interval "10s"
 "date '+%H:%M %b %d, %Y'")
 
-(defwindow bar
-  :monitor 0
-  :windowtype "dock"
-  :geometry (geometry :x "0%"
-    :y "0%"
-    :width "50%"
-    :height "24px"
-  :anchor "top center")
-  :reserve (struts :side "top" :distance "4%")
-  (bar))
 
 
-(defwindow music
-  :monitor 0
-  :geometry (geometry :x "10px"
-    :y "60px"
-    :width "400px"
-    :height "60px"
-  :anchor "top right")
-  :stacking "bg"
-  :reserve (struts :distance "80px" :side "top")
-  :windowtype "dock"
-  :wm-ignore false
-  (musicWidget))
-
-(defpoll TIME :interval "1s" `date +\"%I:%M:%S %p\"`)
-(defpoll DATE :interval "1s" `date +\"%A %d %B\"`)
+(defpoll TIME :interval "1s" "date +'%H:%M:%S %p'")
+(defpoll DATE :interval "1s" "date +'%A %d %B'")
 
 (defwidget clock []
-  (box :class "dockbox"
-    (box :class "clockbox" :orientation "h" :spacing 0 :valign "center" :halign "start" :space-evenly "false" :vexpand "false" :hexpand "false"
-      (label :class "time" :halign "start" :wrap "true" :limit-width 25 :text TIME)
-      (label :class "date" :halign "start" :wrap "true" :limit-width 25 :text DATE))
+  (box :class "dockbox mainbar" :space-evenly "false" :spacing 10 :halign "end"
+    (systray :class "mysystray" :icon-size 24)
+    (button :halign "end" :valign "center" :onclick "${EWW_CMD} update clock_current_display=${clock_current_display==1 ? 0:1}"
+      (stack :selected clock_current_display
+        :halign "end"
+        :transition "slidedown"
+        :same-size true
+        (label :halign "end" :text TIME)
+        (label :halign "end" :text DATE )
+      )
+    )
+    (powermenu)
+  )
+)
+
+(defwidget powermenu []
+  (box :class "powermenu"
+    (button :class "power" :onclick `hyprctl dispatch exit`
+      (label  :text "󰐥")
+    )
   )
 )
 
@@ -161,11 +132,20 @@
   :monitor 0
   :geometry (geometry :x "10px"
     :y "10px"
-    :width "50%"
     :height "40px"
   :anchor "top right")
   :stacking "bg"
-  :reserve (struts :distance "80px" :side "top")
+  :windowtype "dock"
+  :wm-ignore true
+  (clock))
+
+(defwindow music
+  :monitor 0
+  :geometry (geometry :x "10px"
+    :y "60px"
+    :height "60px"
+  :anchor "top right")
+  :stacking "bg"
   :windowtype "dock"
   :wm-ignore false
-  (clock))
+  (musicWidget))

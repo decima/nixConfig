@@ -1,7 +1,7 @@
 limitTop=60
-limitLeft=30
-limitRight=30
-limitBottom=60
+limitLeft=2
+limitRight=2
+limitBottom=2
 moveStep=50
 resizeStep=$moveStep
 currentWindow=$(hyprctl activewindow -j)

@@ -12,7 +12,8 @@
     };
 
     home.packages = with pkgs; [
-        rofi   
+        rofi
+        
         (writeShellScriptBin "awt" (builtins.readFile ./scripts/awt.sh))    
     ];
 
