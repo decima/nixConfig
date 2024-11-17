@@ -2,38 +2,27 @@
 (defpoll ARTIST :interval "1s" `./scripts/music_info --artist`)
 (defpoll COVER :interval "1s" `./scripts/music_info --cover`)
 (defpoll STATUS :interval "1s" `./scripts/music_info --status`)
-(defpoll clock_current_display :interval "2s" `eww update clock_current_display=0 & echo 0 `)
+(defpoll BATTERY_PERCENT :interval "5s" `./scripts/battery --perc`)
+(defpoll BATTERY_ICON :interval "1s" `./scripts/battery --icon`)
+(defpoll NOTIFICATIONS_COUNT :interval "5s" `swaync-client -c`)
+(defvar CLOCK_DISPLAY 0)
+(defpoll VOLUME :interval "0.1s" './scripts/getVolume @DEFAULT_SINK@')
 
-(defwidget centerstuff []
-  (box :class "centerstuff" :orientation "h" :spacing 20
-    (box windowTitle)
-  )
-)
 
-(defwidget sidestuff []
-  (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
-    (systray)
-    (volume)
-    time
-    
-  ))
 
-(defwidget volume[]
+(defwidget volumeWidget[]
   (box
     :class "volume"
-    
-    :orientation "h"
     :space-evenly false
-    :halign "start"
     :spacing 2
+    
     (button
-      :class "label"
-      :onclick {volume > 0 ? "wpctl set-volume @DEFAULT_SINK@ 0%": "wpctl set-volume @DEFAULT_SINK@ 100%"}
-      { volume > 0 ? " ":" " }
+      :onclick {VOLUME > 0 ? "wpctl set-mute @DEFAULT_SINK@ 1": "wpctl set-mute @DEFAULT_SINK@ 0"}
+      (label :text { VOLUME > 0 ? " ":" " })
     )
     (metric
-      :value volume
-      :onchange "wpctl set-volume @DEFAULT_SINK@ {}%"
+      :value VOLUME
+      :onchange "wpctl set-mute @DEFAULT_SINK@ 0 && wpctl set-volume @DEFAULT_SINK@ {}%"
     )
     
   )
@@ -74,8 +63,9 @@
 (defwidget metric [ value onchange]
   (box :orientation "h"
     :class "metric"
-    :space-evenly false
+    :space-evenly true
     (scale :min 0
+      :width 100
       :max 101
       :active {onchange != ""}
       :value value
@@ -93,11 +83,6 @@
 )
 
 
-(defpoll volume :interval "0.2s"
-'./getvol.sh')
-
-(defpoll time :interval "10s"
-"date '+%H:%M %b %d, %Y'")
 
 
 
@@ -105,10 +90,10 @@
 (defpoll DATE :interval "1s" "date +'%A %d %B'")
 
 (defwidget clock []
-  (box :class "dockbox mainbar" :space-evenly "false" :spacing 10 :halign "end"
-    (systray :class "mysystray" :icon-size 24)
-    (button :halign "end" :valign "center" :onclick "${EWW_CMD} update clock_current_display=${clock_current_display==1 ? 0:1}"
-      (stack :selected clock_current_display
+  (box :class "dockbox mainbar" :space-evenly "false" :spacing 5 :halign "end"
+    (systray :class "mysystray" :icon-size 20 :spacing 5)
+    (button :halign "end" :valign "center" :onclick `./scripts/clock &`
+      (stack :selected CLOCK_DISPLAY
         :halign "end"
         :transition "slidedown"
         :same-size true
@@ -117,11 +102,36 @@
       )
     )
     (powermenu)
+    
+  )
+)
+
+(defwidget battery []
+  (box :class "battery-widget"
+    :space-evenly "false"
+    :spacing 2
+    (label :class "battery-icon" :text BATTERY_ICON)
+    (label  :text BATTERY_PERCENT)
+    
   )
 )
 
 (defwidget powermenu []
   (box :class "powermenu"
+    :spacing 8
+    :space-evenly "false"
+    (battery)
+    (volumeWidget)
+    (button :visible { NOTIFICATIONS_COUNT > 0}  :onclick `swaync-client -t -sw`
+      (box
+        :space-evenly "false" :spacing 6
+        (label :text "󰻞")
+        (label :text NOTIFICATIONS_COUNT)
+      )
+    )
+    (button :class "lock" :onclick `hyprctl dispatch exec hyprlock`
+      (label  :text "")
+    )
     (button :class "power" :onclick `hyprctl dispatch exit`
       (label  :text "󰐥")
     )
