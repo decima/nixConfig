@@ -1,0 +1,29 @@
+#!/bin/sh
+SOURCE=$1
+LEVEL=$2
+FORCE=$3
+content=$(wpctl get-volume $SOURCE | cut -d\: -f 2 )
+if [[ "$content" == *"MUTED"*  ]]; then
+  if [[ $LEVEL < 1 ]]; then
+    LEVEL=$(wpctl get-volume $SOURCE | cut -d\: -f 2|cut -f2 -d\  )
+  
+fi
+
+vol=$(wpctl get-volume $SOURCE | cut -d\: -f 2|cut -f2 -d\  )
+echo "$vol*100"|bc
+
+
+# 4 use cases
+#################
+#################
+#                 |INIT VALUES| NEW VALUES
+#   ACTION        |VOL|MUTE   |setLevel|setMute
+#   UP vol 100    |50 | F     | 100    |   F
+#   UP vol 100    |50 | T     | 100    |   F
+#   DOWN vol 10   |50 | F     | 10     |   F
+#   DOWN vol 10   |50 | T     | 10     |   F
+#   UP vol 50     |0  | F     | 50     |   F
+#   DOWN vol 0    |50 | F     | 0      |   T
+#   UNMUTE        |50 | T     | 50     |   F
+#   MUTE          |50 | F     | 50     |   T
+#   UNMUTE        |0  | T     | 30     |   F     

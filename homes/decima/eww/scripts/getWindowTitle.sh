@@ -1,1 +1,0 @@
-/nix/store/p1648ycinfsnimcpaypdxaqwdw3z2jjk-home-manager-files/.config/eww/getWindowTitle.sh
