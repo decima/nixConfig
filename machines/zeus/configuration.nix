@@ -18,7 +18,6 @@
 
     environment.systemPackages = with pkgs; [
         libnotify
-        xfce.thunar
         waybar
         inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
     ];

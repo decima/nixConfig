@@ -2,10 +2,12 @@
 {
 
     environment.systemPackages = with pkgs; [
-        jetbrains.goland
-        jetbrains.phpstorm
-        php83
         go
+        jetbrains.goland
+
+        php83
+        symfony-cli
+        jetbrains.phpstorm        
     ];
 
     programs.adb.enable = true;

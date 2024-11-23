@@ -16,7 +16,7 @@
     ];
 
         wayland.windowManager.hyprland.settings."exec-once" = [
-        "eww --no-daemonize daemon"
+        "eww daemon"
         "eww open clock"
         "eww open music"
     ];

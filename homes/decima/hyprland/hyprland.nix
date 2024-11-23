@@ -10,6 +10,8 @@
     ];
 
     home.packages = with pkgs; [
+        xfce.thunar
+        networkmanagerapplet
         (writeShellScriptBin "awt" (builtins.readFile ./scripts/awt.sh))    
     ];
 
@@ -20,7 +22,11 @@
         pkgs.hyprlandPlugins.hyprexpo
     ];
 
-     wayland.windowManager.hyprland.settings.plugins ={
+    wayland.windowManager.hyprland.settings."exec-once" = [
+        "nm-applet --indicator"
+    ];
+
+    wayland.windowManager.hyprland.settings.plugins ={
         # hyprbars={
         #     # example config
         #     bar_height = 24;
@@ -39,11 +45,14 @@
             gesture_positive = true; # positive = swipe down. Negative = swipe up.
 
         };
-     };
+    };
 
 
     wayland.windowManager.hyprland.settings.monitor = [
         "eDP-1, 1920x1080, 0x0, 1"
+        ", preferred, auto, 1"
+
+
     ];
     
     wayland.windowManager.hyprland.settings.windowrulev2 = [
@@ -69,8 +78,8 @@
 
             # https://wiki.hyprland.org/Configuring/Variables/#variable-types for info about colors
             #"col.active_border" = "rgba(ffffff66) rgba(00000066) 45deg";
-            "col.active_border" = "rgba(ffffff99) rgba(ffffff66) 45deg";
-            "col.inactive_border" = "rgba(595959aa)";
+            "col.inactive_border" = "rgba(ffffff99) rgba(ffffff66) 45deg";
+            "col.active_border" = "rgba(595959aa)";
 
             # Set to true enable resizing windows by clicking and dragging on borders and gaps
             resize_on_border = true; 
@@ -150,6 +159,7 @@
         "$mod, Right, exec, awt splash right"
         "$mod, Up, exec, awt splash top"
         "$mod, Down, exec, awt splash bottom"
+        "$mod, T, exec, awt state toggle"
     
         "ALT, Tab, cyclenext,"
         "ALT, Tab, bringactivetotop,"
