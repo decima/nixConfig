@@ -5,6 +5,9 @@ limitBottom=2
 moveStep=50
 resizeStep=$moveStep
 currentWindow=$(hyprctl activewindow -j)
+isFloating=$(echo $currentWindow|jq -r ".floating")
+isFullscreen=$(echo $currentWindow|jq -r ".fullscreen")
+
 currentWorkspace=$(hyprctl activeworkspace -j)
 monitorId=`echo $currentWorkspace|jq -r ".monitorID"`
 currentMonitorList=$(hyprctl monitors $monitorId -j)
@@ -27,19 +30,32 @@ arg=$2
 splash() {
 	if [[ "$1" == "left" ]]; then
         hyprctl dispatch resizeactive exact $(echo "$currentMonitorWidth/2-$limitLeft"|bc) $(echo "$currentMonitorHeight-$limitTop-$limitBottom"|bc)
-        hyprctl dispatch moveactive exact $limitLeft $limitTop
+        hyprctl dispatch swapwindow l
 
     elif [[ "$1" == "right" ]];then
          hyprctl dispatch resizeactive exact $(echo "$currentMonitorWidth/2-$limitLeft"|bc) $(echo "$currentMonitorHeight-$limitTop-$limitBottom"|bc)
-        hyprctl dispatch moveactive exact 50% $limitTop
+        hyprctl dispatch swapwindow r
     
     elif [[ "$1" == "top" ]];then
-        hyprctl dispatch resizeactive exact $(echo "$currentMonitorWidth-$limitLeft-$limitRight"|bc) $(echo "$currentMonitorHeight-$limitTop-$limitBottom"|bc)
-        hyprctl dispatch moveactive exact $limitLeft $limitTop
+
+        if [[ "$isFloating" == "true" ]]; then
+            hyprctl dispatch settiled
+        fi
+
+        if [[ "$isFullscreen" == "0" ]]; then
+            hyprctl dispatch fullscreenstate 1 1
+        fi
+        #hyprctl dispatch resizeactive exact $(echo "$currentMonitorWidth-$limitLeft-$limitRight"|bc) $(echo "$currentMonitorHeight-$limitTop-$limitBottom"|bc)
+        #hyprctl dispatch moveactive exact $limitLeft $limitTop
 
     elif [[ "$1" == "bottom" ]];then
-        hyprctl dispatch resizeactive exact 60% 60%
-        hyprctl dispatch centerwindow
+        #hyprctl dispatch resizeactive exact 60% 60%
+        #hyprctl dispatch centerwindow
+        if [[ "$isFullscreen" == "1" ]]; then
+        hyprctl dispatch fullscreenstate 0 0
+        elif [[ "$isFloating" == "false" ]]; then
+            hyprctl dispatch setfloating
+        fi
     fi
 }
 

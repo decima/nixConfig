@@ -1,22 +1,18 @@
 { config, pkgs, ... }:
 {
     imports = [
-        ./hyprlock.nix
-        ./hyprpaper.nix
-        ./swaync.nix
-        ../eww/eww.nix
+        ./lockScreens/hyprlock.nix
+        ./wallpapers/wallpapers.nix
+        ./notifications/mako/mako.nix
+        ./bars/eww/eww.nix
+        #./appLaunchers/walker/walker.nix
+        ./appLaunchers/nwg-drawer/nwg-drawer.nix
     ];
 
     home.packages = with pkgs; [
-        rofi
-        swaynotificationcenter
         (writeShellScriptBin "awt" (builtins.readFile ./scripts/awt.sh))    
     ];
 
-    programs.rofi = {
-        enable = true;
-        theme = "Arc-Dark";
-    };
 
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.plugins = [
@@ -51,14 +47,7 @@
     ];
     
     wayland.windowManager.hyprland.settings.windowrulev2 = [
-        "float, class:xdg-desktop-portal-gtk"
-        "float, class:Rofi"
-        #"size 300 300, class:Rofi"
-        "center, class:Rofi"
-        "stayfocused, class:Rofi"
-        "plugin:hyprbars:nobar, class:Rofi"
-        "plugin:hyprbars:nobar, class:xdg-desktop-portal-gtk"
-        "float, class:.*"
+        #"float, class:.*"
         "size 800 600, class:xdg-desktop-portal-gtk"
     ];
 
@@ -70,14 +59,13 @@
         "$moveStep" = "50";
         "$terminal" = "kitty";
         "$fileManager" = "thunar";
-        "$menu" = "rofi -show drun";
         "$mod" = "SUPER";
 
         general = { 
-            gaps_in = 5;
-            gaps_out = "34,4,4,4";
+            gaps_in = 4;
+            gaps_out = "60,2,2,2";
 
-            border_size = 6;
+            border_size = 4;
 
             # https://wiki.hyprland.org/Configuring/Variables/#variable-types for info about colors
             #"col.active_border" = "rgba(ffffff66) rgba(00000066) 45deg";

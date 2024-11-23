@@ -7,5 +7,8 @@
         php83
         go
     ];
+
+    programs.adb.enable = true;
+    users.users.decima.extraGroups = ["adbusers"];
     
 }
