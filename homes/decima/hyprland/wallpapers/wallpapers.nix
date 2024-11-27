@@ -9,7 +9,8 @@
 
     imports = [
       (import ./managers/hyprpaper.nix { 
-        wallpaper = "/home/decima/.wallpapers/4.png"; 
+        wallpaper = "/home/decima/.wallpapers/4.png";
+        alternative = "/home/decima/.wallpapers/2.png";
       })
     ];
     

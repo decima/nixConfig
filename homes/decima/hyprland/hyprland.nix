@@ -120,6 +120,18 @@
         };
     };
 
+    
+     wayland.windowManager.hyprland.settings.workspace=[
+        "1,monitor:eDP-1"
+        "2,monitor:eDP-1"
+        "3,monitor:eDP-1"
+        "4,monitor:eDP-1"
+        "5,monitor:eDP-1"
+        "6,monitor:eDP-1"
+        "7,monitor:eDP-1"
+        "8,monitor:eDP-1"
+        "9,monitor:eDP-1"
+     ];
     wayland.windowManager.hyprland.settings.bindl=[
         ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     ];
@@ -168,7 +180,8 @@
         # workspaces
         # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
         builtins.concatLists (builtins.genList (i:
-            let ws = i + 1;
+            let 
+                ws = i + 1;
             in [
                 "$mod, code:1${toString i}, workspace, ${toString ws}"
                 "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"

@@ -106,6 +106,9 @@
     google-chrome
     acpi
     jc
+    socat
+    gnome-tweaks
+    vanilla-dmz
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

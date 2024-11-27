@@ -1,4 +1,4 @@
-{ wallpaper, ... }:
+{ wallpaper, alternative, ... }:
 { config, pkgs, ... }:
 {
 
@@ -12,10 +12,13 @@
         enable = true;
             settings = {
                 preload = [
+                    alternative
                     wallpaper
                 ];
                 wallpaper = [
-                ",${wallpaper}"
+
+                    ",${alternative}"
+                    "eDP-1,${wallpaper}"
                 ];
             };
         };
