@@ -1,14 +1,22 @@
 { config, pkgs, ... }:
 {
 
+    programs.nix-ld.enable = true;
+    programs.nix-ld.libraries = with pkgs; [
+        xorg.libX11
+        xorg.libXcursor
+        xorg.libXext
+        #xorg.libXi.dev
+        xorg.libXi
+        # Add any missing dynamic libraries for unpackaged programs
+        # here, NOT in environment.systemPackages
+    ];
+
     environment.systemPackages = with pkgs; [
         discord-ptb
-        dwarf-fortress
-        dwarf-fortress-packages.dwarf-fortress-full
         prismlauncher #this is minecraft launcher
-        fallout-ce
-        quake3e
-        freeciv
+        bsdgames
+        angband
     ];
 
 
