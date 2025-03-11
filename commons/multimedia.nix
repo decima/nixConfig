@@ -8,6 +8,7 @@
         sway-contrib.grimshot #screenshots
         playerctl
         alsa-utils
+        v4l-utils
     ];
 
     

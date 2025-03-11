@@ -23,7 +23,7 @@ in
         core.editor = editor;
         init.defaultBranch = "main";
         push.autoSetupRemote = true;
-        url."git@github.com".insteadOf = "https://github.com";
+        #url."git@github.com".insteadOf = "https://github.com";
         "tig \"bind\"".generic = [
             "r !git rebase -i %(commit)^"
             "p @sh -c \"echo -n %(commit) | xclip\""

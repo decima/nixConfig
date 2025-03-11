@@ -2,10 +2,10 @@
     description = "My working Flake!";
 
     inputs = {
-        #nixpkgs.url = "nixpkgs/nixos-24.05";
-        #home-manager.url = "github:nix-community/home-manager/release-24.05";
-        nixpkgs.url = "nixpkgs/nixos-unstable";
-        home-manager.url = "github:nix-community/home-manager/master";
+        nixpkgs.url = "nixpkgs/nixos-24.11";
+        home-manager.url = "github:nix-community/home-manager/release-24.11";
+        #nixpkgs.url = "nixpkgs/nixos-unstable";
+        #home-manager.url = "github:nix-community/home-manager/master";
         home-manager.inputs.nixpkgs.follows = "nixpkgs";
         hyprland-contrib = {
             url = "github:hyprwm/contrib";
@@ -25,9 +25,13 @@
             
             # homes configurations
             homeConfigurations = {
-                decima = home-manager.lib.homeManagerConfiguration {
+                "decima@zeus" = home-manager.lib.homeManagerConfiguration {
                     inherit pkgs;
-                    modules = [./homes/decima/home.nix];
+                    modules = [./homes/decima_zeus/home.nix];
+                };
+                "decima@lumie" = home-manager.lib.homeManagerConfiguration {
+                    inherit pkgs;
+                    modules = [./homes/decima_lumie/home.nix];
                 };
             };
         
@@ -43,7 +47,11 @@
                 specialArgs = {inherit inputs;};
                 modules = [./machines/zeus/configuration.nix]; 
             };
-
+            lumie = lib.nixosSystem {
+            inherit system;
+                specialArgs = {inherit inputs;};
+            modules = [./machines/lumie/configuration.nix];
+            };
             ### DO NOT REMOVE OR MOVE THIS LINE : ADD MACHINE CONFIG OVER THIS LINE
         };
     };
