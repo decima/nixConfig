@@ -1,37 +1,36 @@
 { config, pkgs, ... }:
 {
 
-    environment.systemPackages = with pkgs; [
-        
-        openssl
-        # utils
-        insomnia
+  environment.systemPackages = with pkgs; [
 
-        # golang
-        go
-        jetbrains.goland
+    openssl
+    # utils
+    insomnia
 
-        ### php 8.3
-        #php83
-        #php83Packages.composer
+    # golang
+    go
+    jetbrains.goland
 
-        ### php 8.4
-        php84
-        php84Packages.composer
+    ### php 8.3
+    #php83
+    #php83Packages.composer
 
-    
-        symfony-cli
-        jetbrains.phpstorm
+    ### php 8.4
+    php84
+    php84Packages.composer
 
-        ### deno (replacing node?)
-        # deno
-        nodePackages.nodejs
-        nodePackages.npm
-        nodePackages.yarn
-        nodePackages.sass
-    ];
+    symfony-cli
+    jetbrains.phpstorm
 
-    programs.adb.enable = true;
-    users.users.decima.extraGroups = ["adbusers"];
-    
+    ### deno (replacing node?)
+    # deno
+    nodePackages.nodejs
+    nodePackages.npm
+    nodePackages.yarn
+    nodePackages.sass
+  ];
+
+  programs.adb.enable = true;
+  users.users.decima.extraGroups = [ "adbusers" ];
+
 }

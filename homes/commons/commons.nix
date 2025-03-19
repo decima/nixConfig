@@ -1,19 +1,20 @@
 { config, pkgs, ... }:
-let 
+let
   editor = "vim";
   shellAliases = {
-      ".." = "cd ..";
-    };
+    ".." = "cd ..";
+  };
 in
 {
 
   imports = [
     ./git.nix
+    ./vscode.nix
     ./hyprland/hyprland.nix
     ./kitty/kitty.nix
 
   ];
-  
+
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "decima";
@@ -34,23 +35,22 @@ in
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
     # # fonts?
     # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-    (writeShellScriptBin "ducks" (builtins.readFile ./scripts/ducks.sh))    
+    (writeShellScriptBin "ducks" (builtins.readFile ./scripts/ducks.sh))
     (writeShellScriptBin "jjqn" (builtins.readFile ./scripts/jjqn.sh))
     (writeShellScriptBin "kmlt" (builtins.readFile ./scripts/kmlt.sh))
   ];
-
 
   home.sessionVariables = {
     EDITOR = editor;
     NIXOS_OZONE_WL = 1;
   };
 
-  programs.bash  = {
+  programs.bash = {
     inherit shellAliases;
     enable = true;
   };
 
-  programs.zsh  = {
+  programs.zsh = {
     inherit shellAliases;
     enable = true;
     autosuggestion.enable = true;
@@ -67,18 +67,7 @@ in
     };
   };
 
- 
-  
   nixpkgs.config.allowUnfree = true;
-
-
-  programs.vscode = {
-    enable = true;
-    extensions = with pkgs.vscode-extensions; [
-      bbenoist.nix
-    ];
-  };  
-
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

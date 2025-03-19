@@ -1,11 +1,7 @@
 { config, pkgs, ... }:
 {
 
-  home.packages = with pkgs; [
-    walker
-  ];
-
-
+  home.packages = with pkgs; [ walker ];
 
   wayland.windowManager.hyprland.settings.windowrulev2 = [
     "float, class:Walker"

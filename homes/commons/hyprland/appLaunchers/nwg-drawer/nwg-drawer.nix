@@ -1,11 +1,7 @@
 { config, pkgs, ... }:
 {
 
-  home.packages = with pkgs; [
-    nwg-drawer
-  ];
-
-
+  home.packages = with pkgs; [ nwg-drawer ];
 
   wayland.windowManager.hyprland.settings.windowrulev2 = [
     "float, class:nwg-drawer"

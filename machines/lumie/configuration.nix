@@ -1,25 +1,28 @@
 { config, pkgs, ... }:
 
 {
-    imports = [
-        ./hardware-configuration.nix
-        ../../configuration.nix
-        ../../commons/development.nix
-        ../../commons/multimedia.nix
-        ../../commons/work.nix
+  imports = [
+    ./hardware-configuration.nix
+    ../../configuration.nix
+    ../../commons/development.nix
+    ../../commons/multimedia.nix
+    ../../commons/work.nix
 
-    ];
-    networking.hostName = "lumie"; # Define your hostname.
-    # #Add any machine specific configuration here
-    swapDevices = [{
-        device = "/swapfile";
-        size = 16 * 1024; # 16GB
-    }];
+  ];
+  networking.hostName = "lumie"; # Define your hostname.
+  # #Add any machine specific configuration here
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 16 * 1024; # 16GB
+    }
+  ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   #boot.loader.grub.device="/dev/disk/by-uuid/b5fe03a1-687a-4dac-a8de-70253aba86fd";
-  boot.initrd.luks.devices."luks-b5fe03a1-687a-4dac-a8de-70253aba86fd".device = "/dev/disk/by-uuid/b5fe03a1-687a-4dac-a8de-70253aba86fd";
+  boot.initrd.luks.devices."luks-b5fe03a1-687a-4dac-a8de-70253aba86fd".device =
+    "/dev/disk/by-uuid/b5fe03a1-687a-4dac-a8de-70253aba86fd";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -50,10 +53,10 @@
   system.activationScripts.binbash = {
     deps = [ "binsh" ];
     text = ''
-        ln -sf /bin/sh /bin/bash
+      ln -sf /bin/sh /bin/bash
     '';
   };
-  
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
@@ -67,7 +70,6 @@
     variant = "";
   };
   services.xserver.xkbOptions = "grp:win_space_toggle";
-
 
   # Configure console keymap
   console.keyMap = "fr";
@@ -98,9 +100,12 @@
   users.users.decima = {
     isNormalUser = true;
     description = "decima";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
@@ -113,8 +118,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
   ];
 
   programs.nix-ld.enable = true;

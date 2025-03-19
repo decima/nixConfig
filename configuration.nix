@@ -6,9 +6,7 @@
 
 {
 
-
-
-  imports = [];
+  imports = [ ];
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -71,7 +69,7 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  environment.shells = with pkgs; [zsh];
+  environment.shells = with pkgs; [ zsh ];
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
 
@@ -79,9 +77,15 @@
   users.users.decima = {
     isNormalUser = true;
     description = "decima";
-    extraGroups = [ "networkmanager" "wheel" "video" "input" "docker" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "video"
+      "input"
+      "docker"
+    ];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
@@ -109,8 +113,9 @@
     socat
     gnome-tweaks
     vanilla-dmz
+    nixfmt-rfc-style
   ];
-  
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -139,9 +144,11 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   #system.stateVersion = "24.05"; # Did you read the comment?
 
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-  
   #boot.kernelPackages = pkgs.linuxPackages_6_11;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 

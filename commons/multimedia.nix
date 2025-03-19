@@ -1,15 +1,14 @@
 { config, pkgs, ... }:
 {
 
-    environment.systemPackages = with pkgs; [
-        spotify
-        pulseaudioFull
-        pavucontrol
-        sway-contrib.grimshot #screenshots
-        playerctl
-        alsa-utils
-        v4l-utils
-    ];
+  environment.systemPackages = with pkgs; [
+    spotify
+    pulseaudioFull
+    pavucontrol
+    sway-contrib.grimshot # screenshots
+    playerctl
+    alsa-utils
+    v4l-utils
+  ];
 
-    
 }

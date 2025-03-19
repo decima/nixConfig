@@ -1,18 +1,13 @@
 { config, pkgs, ... }:
 {
 
-    home.packages = with pkgs; [
-        mako
-    ];
+  home.packages = with pkgs; [ mako ];
 
+  wayland.windowManager.hyprland.settings."exec-once" = [ "mako" ];
 
-    wayland.windowManager.hyprland.settings."exec-once" = [
-        "mako"
-    ];
-    
-    services.mako = {
-        enable = true;
-        anchor = "top-left";
-        
-    };
+  services.mako = {
+    enable = true;
+    anchor = "top-left";
+
+  };
 }

@@ -1,14 +1,11 @@
 { config, pkgs, ... }:
 {
 
-  home.packages = with pkgs; [
-    rofi
-  ];
+  home.packages = with pkgs; [ rofi ];
   programs.rofi = {
     enable = true;
     theme = "Arc-Dark";
   };
-
 
   wayland.windowManager.hyprland.settings.windowrulev2 = [
     "float, class:Rofi"

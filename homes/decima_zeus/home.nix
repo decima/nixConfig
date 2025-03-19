@@ -1,13 +1,10 @@
 { config, pkgs, ... }:
-let 
-  novar="novar";
+let
+  novar = "novar";
 in
 {
-  imports = [
-    ../commons/commons.nix
-  ];
-  
-  
+  imports = [ ../commons/commons.nix ];
+
   home.stateVersion = "24.05"; # Please read the comment before changing.
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -40,9 +37,9 @@ in
   #
   #  /etc/profiles/per-user/decima/etc/profile.d/hm-session-vars.sh
   #
-    dconf.settings = {
+  dconf.settings = {
     "org/gnome/desktop/background" = {
-        "picture-uri" = "/home/decima/.wallpapers/4.png";
+      "picture-uri" = "/home/decima/.wallpapers/4.png";
     };
   };
 
