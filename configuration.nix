@@ -114,6 +114,7 @@
     gnome-tweaks
     vanilla-dmz
     nixfmt-rfc-style
+    mutter
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

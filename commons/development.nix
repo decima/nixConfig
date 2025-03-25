@@ -28,6 +28,13 @@
     nodePackages.npm
     nodePackages.yarn
     nodePackages.sass
+
+
+    terminator
+
+    (writeShellScriptBin "docker-compose" ''
+      docker compose "$@"
+    '')
   ];
 
   programs.adb.enable = true;

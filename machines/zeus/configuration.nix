@@ -11,6 +11,7 @@
     ../../commons/gaming.nix
     ../../commons/development.nix
     ../../commons/temp.nix
+    ../../commons/keyboard.nix
     ../../configuration.nix
     ./graphics.nix
   ];
@@ -38,10 +39,6 @@
     nerd-fonts.droid-sans-mono
     nerd-fonts.space-mono
   ];
-
-  services.udev.extraRules = ''
-    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="100", TAG+="uaccess", TAG+="udev-acl"
-  '';
 
   # #configure swapfiles and other machine specific configuration here:
   # swapDevices = [{

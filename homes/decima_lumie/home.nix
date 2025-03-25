@@ -38,7 +38,37 @@ in
     ".shtools".source = ./scripts.sh;
   };
 
-  home.packages = with pkgs; [ gnomeExtensions.forge ];
+  home.packages = with pkgs; [
+    gnomeExtensions.forge
+    # gnomeExtensions.user-themes
+    # whitesur-gtk-theme
+    # lavanda-gtk-theme
+  ];
+
+  dconf.settings = {
+    "org/gnome/shell" = {
+      # `gnome-extensions list` for a list
+      enabled-extensions = [
+        "user-theme@gnome-shell-extensions.gcampax.github.com"
+      ];
+    };
+
+    # "org/gnome/desktop/interface".gtk-theme = "WhiteSur-Light";
+    # "org/gnome/shell/extensions/user-theme".name="WhiteSur-Light";
+  };
+
+
+  programs.vscode.extensions = [
+  ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+     {
+         name =     "geminicodeassist";
+         publisher = "Google";
+         version = "2.29.0";
+         sha256 = "sha256-CixHqIUgTju8GnH2gwdgYb4UfJ/2Jx8lH5oHzsXqZYk=";
+     }
+ ];
+  programs.vscode.userSettings."geminicodeassist.project" = "lumapps-dev-ai-tooling";
+
 
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
@@ -69,6 +99,7 @@ in
   dconf.settings = {
     "org/gnome/desktop/background" = {
       "picture-uri" = "/home/decima/.wallpapers/5.png";
+      "picture-uri-dark" = "/home/decima/.wallpapers/4.png";
     };
     "org/gnome/desktop/input-sources" = {
       show-all-sources = true;

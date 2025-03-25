@@ -19,6 +19,8 @@
 
     fzf
     jetbrains.pycharm-community
+
+    golangci-lint
   ];
 
   programs.nix-ld.enable = true;

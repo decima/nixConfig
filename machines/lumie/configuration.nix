@@ -7,6 +7,7 @@
     ../../commons/development.nix
     ../../commons/multimedia.nix
     ../../commons/work.nix
+    ../../commons/keyboard.nix
 
   ];
   networking.hostName = "lumie"; # Define your hostname.

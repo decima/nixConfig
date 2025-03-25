@@ -67,6 +67,18 @@ in
     };
   };
 
+  dconf = {
+    settings = {
+      "org/gnome/mutter" = {
+        "edge-tiling" = true;
+      };
+      "org/gnome/desktop/interface" = {
+        "accent-color" = "pink";
+        "color-scheme" = "default";
+      };
+    };
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   # Let Home Manager install and manage itself.
