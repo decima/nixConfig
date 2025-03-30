@@ -26,7 +26,10 @@
     waybar
     inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
     transmission_4-qt
-    nerdfonts
+    nerd-fonts.ubuntu
+    nerd-fonts.fira-code
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.space-mono
   ];
 
   programs.light.enable = true;
@@ -34,14 +37,11 @@
   programs.hyprland.enable = true;
   programs.hyprlock.enable = true;
 
-
-
   # #configure swapfiles and other machine specific configuration here:
   # swapDevices = [{
   #     device = "/swapfile";
   #     size = 2 * 1024; # 16GB
   # }];
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

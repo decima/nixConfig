@@ -8,6 +8,9 @@
     userSettings = {
       "window.autoDetectColorScheme" = true; # use light theme when os is light
       "files.autoSave" = "afterDelay";
+      "[nix]" = {
+        "editor.defaultFormatter" = "jnoortheen.nix-ide";
+      };
     };
 
   };
