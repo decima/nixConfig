@@ -1,0 +1,75 @@
+#!/bin/bash
+
+usage() {
+	cat <<EOF
+usage: $0 [OPTION]... [ARGUMENTS]
+-h           help
+-c           context
+-t           tty to output to
+-f           file to output the result to before going to fzf
+
+Examples:
+kubectl monkeynodes -c dev-go-cell-001
+kubectl monkeynodes -c dev-go-cell-001 -t /dev/pts/1
+kubectl monkeynodes -c dev-go-cell-001 -f /tmp/toto
+EOF
+}
+
+# default values
+typeset CONTEXT=$(kubectl config current-context)
+typeset TTY_OUT=/dev/null
+typeset FILE_OUT=/tmp/fzf-nodes
+
+while getopts "hc:t:f:" arg; do
+  case $arg in
+	h)
+	  usage
+	  exit 0
+	  ;;
+	c)
+	  CONTEXT=$OPTARG
+	  ;;
+	t)
+	  TTY_OUT=$OPTARG
+	  ;;
+        f)
+	  FILE_OUT=$OPTARG
+	  ;;
+	*)
+	  usage
+	  exit 1
+  esac
+done
+
+shift $((OPTIND-1))
+
+(( $# >= 0 )) || { echo >&2 "invalid number of arguments: $# | $@"; usage; exit 1; }
+
+scriptfile=/tmp/monkeynodessubscript
+
+cat <<'EOF' > $scriptfile
+#!/usr/bin/env bash
+
+categories=("redis.*node" "^api-gateway\s" "infra-provisioning-pgbouncer" "pgbouncer" "^lumapps\s" "^kube-system\s")
+
+json_output=$(kubectl --context=$1 get pods -A -o json --field-selector spec.nodeName=$2)
+
+exclude_categories="^$"
+for category in ${categories[@]}; do
+    echo "> $category ($exclude_categories) ..."
+    echo "$json_output" | jq -r '.items[] | "\(.metadata.namespace) \(.metadata.name)"' | grep -vE "$exclude_categories" | grep "$category" | column -t
+    exclude_categories="$exclude_categories|$category"
+    echo '=========='
+done
+echo '> Others ...'
+echo "$json_output" | jq -r '.items[] | "\(.metadata.namespace) \(.metadata.name)"' | grep -vE "$exclude_categories" | column -t
+EOF
+
+kubectl --context $CONTEXT get nodes -o json |
+        jq -cr '
+          [.items[] | {"name": .metadata.name, "nodepool": .metadata.labels."lumapps.com/nodepool"}] |
+          sort_by(.nodepool) |
+          .[] |
+          "\(.nodepool) \(.name)"' |
+        tee /tmp/fzf-nodes |
+        fzf -d ' ' --header="NODEPOOL NODE" --preview="echo {} > $TTY_OUT; echo '-----' > $TTY_OUT; bash $scriptfile $CONTEXT {2} | tee $TTY_OUT; echo '-----' > $TTY_OUT; echo {} > $TTY_OUT; echo -e '=====\n=====\n=====' > $TTY_OUT"

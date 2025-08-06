@@ -70,11 +70,25 @@ EOF
     ) | jq .
 }
 
-
+uuid(){
+  python -c "from uuid import UUID; import sys; print(str(UUID(sys.argv[1]).int));" "$1"
+}
 
 remote_kibana(){
   CELL=$1
   echo $(kibana.sh deployed_kibana_get_credentials $CELL)| awk -F '\t' 'NR==2{print $2}'|xclip -selection clipboard
   (sleep 10; open https://localhost:5601/) &
   kibana.sh deployed_kibana_port_forward $CELL
+}
+
+to_accounts_admin() {
+    gcloud config configurations activate admin
+    sed -i '/access-token:/d' ~/.kube/config
+    rm -f ~/.kube/gke_gcloud_auth_plugin_cache
+}
+
+to_accounts_default() {
+    gcloud config configurations activate default
+    sed -i '/access-token:/d' ~/.kube/config
+    rm -f ~/.kube/gke_gcloud_auth_plugin_cache
 }

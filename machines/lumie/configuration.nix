@@ -3,11 +3,13 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./network.nix
     ../../configuration.nix
     ../../commons/development.nix
     ../../commons/multimedia.nix
     ../../commons/work.nix
     ../../commons/keyboard.nix
+    ../../commons/bluetooth.nix
 
   ];
   networking.hostName = "lumie"; # Define your hostname.
@@ -123,10 +125,30 @@
     #  wget
   ];
 
-  programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [
+  hardware.opengl = {
+    enable = true;
+  };
 
-  ];
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+       zlib
+      zstd
+      stdenv.cc.cc
+      curl
+      openssl
+      attr
+      libssh
+      bzip2
+      libxml2
+      acl
+      libsodium
+      util-linux
+      xz
+      systemd
+      libGL
+    ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

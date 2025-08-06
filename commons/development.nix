@@ -1,11 +1,14 @@
 { config, pkgs, ... }:
 {
-
+  nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
 
     openssl
     # utils
     insomnia
+
+    # C
+    gcc
 
     # golang
     go
@@ -30,6 +33,10 @@
     nodePackages.sass
 
 
+    jetbrains.datagrip
+
+    jetbrains-toolbox
+    
     terminator
 
     (writeShellScriptBin "docker-compose" ''

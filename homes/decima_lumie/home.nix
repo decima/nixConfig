@@ -36,6 +36,8 @@ in
     #   org.gradle.daemon.idletimeout=3600000
     # '';
     ".shtools".source = ./scripts.sh;
+    ".local/bin/kubectl-monkeynodes".source = ./kubectl-monkeynodes;
+
   };
 
   home.packages = with pkgs; [
@@ -43,6 +45,8 @@ in
     # gnomeExtensions.user-themes
     # whitesur-gtk-theme
     # lavanda-gtk-theme
+    hunspell
+    hunspellDicts.en_US-large
   ];
 
   dconf.settings = {
@@ -57,18 +61,18 @@ in
     # "org/gnome/shell/extensions/user-theme".name="WhiteSur-Light";
   };
 
-
-  programs.vscode.extensions = [
-  ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-     {
-         name =     "geminicodeassist";
-         publisher = "Google";
-         version = "2.29.0";
-         sha256 = "sha256-CixHqIUgTju8GnH2gwdgYb4UfJ/2Jx8lH5oHzsXqZYk=";
-     }
- ];
-  programs.vscode.userSettings."geminicodeassist.project" = "lumapps-dev-ai-tooling";
-
+  programs.vscode.profiles.default.extensions =
+    [
+    ]
+    ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+      {
+        name = "geminicodeassist";
+        publisher = "Google";
+        version = "2.29.0";
+        sha256 = "sha256-CixHqIUgTju8GnH2gwdgYb4UfJ/2Jx8lH5oHzsXqZYk=";
+      }
+    ];
+  programs.vscode.profiles.default.userSettings."geminicodeassist.project" = "lumapps-dev-ai-tooling";
 
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
@@ -88,18 +92,29 @@ in
   #
   programs.bash.enable = true;
   programs.zsh.initExtraFirst = ''
+    touch /home/decima/.organization_list.csv
     export PATH=$PATH:/home/decima/projects/lumapps/core-go/scripts
     export PATH=$PATH:/home/decima/projects/lumapps/core-go/services/winston/scripts
     mkdir -p /home/decima/.local/bin/
     ln -sf /home/decima/projects/lumapps/core/local/scripts/open_psql_shell.py /home/decima/.local/bin/kubectl-psqlc
+    
     export PATH=$PATH:/home/decima/.local/bin
     source /home/decima/.shtools
+
+    export CORE_PATH="$HOME/projects/lumapps/core"
+    export MONOLITH_PATH="$HOME/projects/lumapps/lumapps-back"
+    export LUMAPPS_ORGAS_FILE_PATH="$HOME/.organization_list.csv"
+    export DEFAULT_SERVICE="monolite"
+
+    . "$CORE_PATH/local/tools/shutils"
+    . "$CORE_PATH/local/tools/shcells"
+
   '';
 
   dconf.settings = {
     "org/gnome/desktop/background" = {
-      "picture-uri" = "/home/decima/.wallpapers/5.png";
-      "picture-uri-dark" = "/home/decima/.wallpapers/4.png";
+      "picture-uri" = "/home/decima/.wallpapers/2.png";
+      "picture-uri-dark" = "/home/decima/.wallpapers/2.png";
     };
     "org/gnome/desktop/input-sources" = {
       show-all-sources = true;
@@ -113,7 +128,7 @@ in
           "us"
         ])
       ];
-      xkb-options = [ "compose:ralt" ];
+     xkb-options = [ "compose:ralt" ];
     };
   };
 
