@@ -17,6 +17,8 @@
     prismlauncher # this is minecraft launcher
     bsdgames
     angband
+    heroic
+    gogdl
   ];
 
   programs.steam = {

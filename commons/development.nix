@@ -12,6 +12,7 @@
 
     # golang
     go
+    gccgo14
     jetbrains.goland
 
     ### php 8.3
@@ -26,12 +27,12 @@
     jetbrains.phpstorm
 
     ### deno (replacing node?)
-    # deno
+    deno
     nodePackages.nodejs
     nodePackages.npm
     nodePackages.yarn
     nodePackages.sass
-
+    bun
 
     jetbrains.datagrip
 
@@ -42,9 +43,16 @@
     (writeShellScriptBin "docker-compose" ''
       docker compose "$@"
     '')
+
   ];
 
   programs.adb.enable = true;
   users.users.decima.extraGroups = [ "adbusers" ];
 
+  services.dnsmasq = {
+    enable = true;
+    settings.address = [ 
+      "/dev.local/127.0.0.1"
+     ];
+  };
 }
