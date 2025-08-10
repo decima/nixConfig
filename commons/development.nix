@@ -27,16 +27,15 @@
     jetbrains.phpstorm
 
     ### deno (replacing node?)
-    deno
     nodePackages.nodejs
     nodePackages.npm
     nodePackages.yarn
     nodePackages.sass
-    bun
+    ### bun
 
-    jetbrains.datagrip
+    # jetbrains.datagrip
 
-    jetbrains-toolbox
+    # jetbrains-toolbox
     
     terminator
 

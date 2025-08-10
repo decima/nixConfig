@@ -10,7 +10,6 @@
     ../../commons/multimedia.nix
     ../../commons/gaming.nix
     ../../commons/development.nix
-    ../../commons/temp.nix
     ../../commons/keyboard.nix
     ../../configuration.nix
     ./graphics.nix
@@ -23,7 +22,7 @@
 
   environment.systemPackages = with pkgs; [
     libnotify
-    waybar
+    # waybar
     inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
     transmission_4-qt
     nerd-fonts.ubuntu
@@ -34,8 +33,8 @@
 
   programs.light.enable = true;
 
-  programs.hyprland.enable = true;
-  programs.hyprlock.enable = true;
+  programs.hyprland.enable = false;
+  programs.hyprlock.enable = false;
 
   # #configure swapfiles and other machine specific configuration here:
   # swapDevices = [{

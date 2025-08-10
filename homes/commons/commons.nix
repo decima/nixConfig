@@ -10,8 +10,9 @@ in
   imports = [
     ./git.nix
     ./vscode.nix
-    ./hyprland/hyprland.nix
-    ./kitty/kitty.nix
+    ./wallpapers/wallpapers.nix
+    #./hyprland/hyprland.nix
+    #./kitty/kitty.nix
 
   ];
 
@@ -50,7 +51,7 @@ in
 
   home.sessionVariables = {
     EDITOR = editor;
-    NIXOS_OZONE_WL = 1;
+    #NIXOS_OZONE_WL = 1;
   };
 
   programs.bash = {

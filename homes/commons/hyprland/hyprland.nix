@@ -1,7 +1,7 @@
 { config, pkgs, ... }: {
   imports = [
     ./lockScreens/hyprlock.nix
-    ./wallpapers/wallpapers.nix
+   # ./wallpapers/wallpapers.nix
     ./notifications/mako/mako.nix
     ./bars/eww/eww.nix
     #./appLaunchers/walker/walker.nix
