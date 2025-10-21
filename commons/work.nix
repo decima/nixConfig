@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs,pkgs-stable, ... }:
 let
   nixpkgsCustom =
     import
@@ -11,7 +11,6 @@ let
         system = pkgs.system;
         config = config.nixpkgs.config;
       };
-
   golangciLintCustom = nixpkgsCustom.golangci-lint;
 
 in
@@ -41,7 +40,7 @@ nixpkgs.overlays = [
     kubelogin
     kubernetes-helm
     (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
-    azure-cli
+    #azure-cli
     postgresql_14
 
     asdf-vm
@@ -65,6 +64,12 @@ nixpkgs.overlays = [
 
     lens
     # kind
+    argocd
+
+    yq-go
+    pkgs-stable.azure-cli
+
+    burpsuite
 
   ];
 

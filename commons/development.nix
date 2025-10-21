@@ -39,9 +39,12 @@
     
     terminator
 
+    gemini-cli
+
     (writeShellScriptBin "docker-compose" ''
       docker compose "$@"
     '')
+    
   ];
 
   programs.adb.enable = true;

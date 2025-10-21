@@ -73,6 +73,9 @@ in
         "kubectx"
       ];
     };
+    initExtra = ''
+      source /home/decima/.private.sh
+    '';
   };
 
   dconf = {
