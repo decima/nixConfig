@@ -13,12 +13,14 @@ _decode_base64_url() {
 }
 
 Bearer(){
-  export TOKEN=$1
-  echo "TOKEN env var available."
-  decode_jwt $TOKEN
+  export TOKEN_KEY="${2:-TOKEN}"
+  export $TOKEN_KEY=$1
+  echo "$TOKEN_KEY env var available."
+  decode_jwt $1
 }
+
 bearer(){
-  Bearer $1
+  Bearer $1 ${2:-TOKEN}
 }
 
 kmlt() {

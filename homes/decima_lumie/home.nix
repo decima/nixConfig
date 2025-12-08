@@ -49,6 +49,11 @@ in
     hunspellDicts.en_US-large
   ];
 
+  programs.pidgin = {
+    enable = true;
+    plugins = [pkgs.pidginPackages.purple-googlechat pkgs.pidginPackages.purple-slack];
+  };
+
   dconf.settings = {
     "org/gnome/shell" = {
       # `gnome-extensions list` for a list
@@ -121,12 +126,13 @@ in
       sources = [
         (lib.hm.gvariant.mkTuple [
           "xkb"
-          "fr"
+          "us"
         ])
         (lib.hm.gvariant.mkTuple [
           "xkb"
-          "us"
+          "fr"
         ])
+        
       ];
      xkb-options = [ "compose:ralt" ];
     };

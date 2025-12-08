@@ -1,4 +1,4 @@
-{ config, pkgs,pkgs-stable, ... }:
+{ config, pkgs,pkgs-stable,lib, ... }:
 let
   nixpkgsCustom =
     import
@@ -15,6 +15,29 @@ let
 
 in
 {
+
+services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    pulse.enable = true;
+  };
+
+  # 2. Enable XDG Desktop Portals
+  # This acts as the bridge between Chrome and the OS
+  
+  services.gnome.core-shell.enable = true; # Ensures the GNOME portal is present
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+  xdg.portal = {
+    
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-gtk
+    ];
+    config.common.default = "gnome";
+  };
+
 
 nixpkgs.overlays = [
     (final: prev: {
@@ -33,6 +56,7 @@ nixpkgs.overlays = [
 
 
   environment.systemPackages = with pkgs; [
+    pidgin
     slack
     teams-for-linux
     kubectl
@@ -41,17 +65,17 @@ nixpkgs.overlays = [
     kubernetes-helm
     (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
     #azure-cli
-    postgresql_14
+    postgresql_17
 
     asdf-vm
-    python312Full
+    python3
     
-    python312Packages.uv
-    python312Packages.pyenchant
-    python312Packages.venvShellHook
-    python312Packages.psycopg2
-    python312Packages.pylint
-    python312Packages.typer
+    python3Packages.uv
+    python3Packages.pyenchant
+    python3Packages.venvShellHook
+    python3Packages.psycopg2
+    python3Packages.pylint
+    python3Packages.typer
     fzf
     jetbrains.pycharm-community
 

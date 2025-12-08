@@ -32,6 +32,34 @@
     nerd-fonts.space-mono
   ];
 
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans # Indispensable pour le Japonais
+    noto-fonts-cjk-serif
+    noto-fonts-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
+    mplus-outline-fonts.githubRelease # Une autre excellente police japonaise
+  ];
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts = {
+      serif = [
+        "Noto Serif"
+        "Noto Serif CJK JP"
+      ];
+      sansSerif = [
+        "Noto Sans"
+        "Noto Sans CJK JP"
+      ];
+      monospace = [
+        "Fira Code"
+        "Noto Sans Mono CJK JP"
+      ];
+    };
+  };
+
   programs.light.enable = true;
 
   programs.hyprland.enable = true;

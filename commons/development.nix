@@ -1,8 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
-
+    inputs.antigravity.packages.${pkgs.system}.default
     openssl
     # utils
     insomnia

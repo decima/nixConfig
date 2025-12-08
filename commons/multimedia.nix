@@ -2,7 +2,7 @@
 {
 
   environment.systemPackages = with pkgs; [
-    spotify
+    #    spotify
     pulseaudioFull
     pavucontrol
     sway-contrib.grimshot # screenshots

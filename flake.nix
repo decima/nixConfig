@@ -5,8 +5,9 @@
     #nixpkgs.url = "nixpkgs/nixos-24.11";
     #home-manager.url = "github:nix-community/home-manager/release-24.11";
     nixpkgs.url = "nixpkgs/nixos-unstable";
-
     nixpkgs-stable.url = "nixpkgs/nixos-25.05";
+
+    antigravity.url = "path:./apps/antigravity";
 
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
