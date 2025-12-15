@@ -7,7 +7,8 @@
 
   services.mako = {
     enable = true;
-    anchor = "top-left";
-
+    settings = {
+      anchor = "top-left";
+    };
   };
 }

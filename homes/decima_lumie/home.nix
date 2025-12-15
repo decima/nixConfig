@@ -41,6 +41,7 @@ in
   };
 
   home.packages = with pkgs; [
+    albert
     gnomeExtensions.forge
     # gnomeExtensions.user-themes
     # whitesur-gtk-theme
@@ -96,7 +97,7 @@ in
   #  /etc/profiles/per-user/decima/etc/profile.d/hm-session-vars.sh
   #
   programs.bash.enable = true;
-  programs.zsh.initExtraFirst = ''
+  programs.zsh.initContent = lib.mkBefore ''
     touch /home/decima/.organization_list.csv
     export PATH=$PATH:/home/decima/projects/lumapps/core-go/scripts
     export PATH=$PATH:/home/decima/projects/lumapps/core-go/services/winston/scripts
@@ -138,4 +139,13 @@ in
     };
   };
 
+  xfconf.enable = true;
+  home.file.".config/autostart/albert.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Albert
+    Exec=albert
+    Terminal=false
+    Hidden=false
+  '';
 }

@@ -63,16 +63,12 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "fr,us";
     variant = "";
   };
-  services.xserver.xkbOptions = "grp:win_space_toggle";
+  services.xserver.xkb.options = "grp:win_space_toggle";
 
   # Configure console keymap
   console.keyMap = "fr";
@@ -81,7 +77,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;

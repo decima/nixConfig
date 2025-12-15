@@ -25,18 +25,24 @@ services.pipewire = {
   # 2. Enable XDG Desktop Portals
   # This acts as the bridge between Chrome and the OS
   
-  services.gnome.core-shell.enable = true; # Ensures the GNOME portal is present
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.gnome.gnome-remote-desktop.enable = true;
+    services.displayManager.gdm = {
+        enable = true;
+        wayland = true;
+  };
+  services.desktopManager.gnome.enable = true;
+  services.xserver.enable = true;
+  services.xserver.desktopManager.xfce.enable = true;
   xdg.portal = {
-    
     enable = true;
+    config.common.default = "*";
     extraPortals = with pkgs; [
       xdg-desktop-portal-gnome
       xdg-desktop-portal-gtk
     ];
-    config.common.default = "gnome";
   };
+
+
 
 
 nixpkgs.overlays = [
@@ -56,6 +62,14 @@ nixpkgs.overlays = [
 
 
   environment.systemPackages = with pkgs; [
+    albert
+    xdg-desktop-portal-gnome
+    xfce.xfce4-xkb-plugin
+    xfce.xfce4-battery-plugin
+    xfce.xfce4-windowck-plugin
+    xfce.xfce4-whiskermenu-plugin
+    skippy-xd
+    
     pidgin
     slack
     teams-for-linux
