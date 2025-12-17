@@ -1,49 +1,56 @@
+#!/usr/bin/env bash
+
+set -e
+
 HOST=$1
 
-if [ -z "$1" ]
-  then
-    echo "No argument supplied"
-    exit 1
+if [ -z "$1" ]; then
+  echo "No argument supplied"
+  exit 1
 fi
 
-LINE_FLAKE_NIX=$(cat flake.nix |grep -n "ADD MACHINE CONFIG OVER THIS LINE" | cut -d : -f 1)
+if [ -d "machines/$HOST" ]; then
+  echo "Machine '$HOST' already exists."
+  exit 1
+fi
 
-# NEW BRANCH
-git checkout -b $HOST/initial-config
+echo "Creating initial configuration for machine '$HOST'..."
 
-# New Machine folder
-mkdir -p machines/$HOST
+git checkout -b "$HOST/initial-config"
+
+mkdir -p "machines/$HOST"
 
 # GENERATE Machine specific config
-echo "{ config, pkgs, ... }:
+cat > "machines/$HOST/configuration.nix" <<EOF
+{ config, pkgs, ... }:
 {
     imports = [
         ./hardware-configuration.nix
         ../../configuration.nix
     ];
-    networking.hostName = \"$HOST\"; # Define your hostname.
-
-    # #configure swapfiles and other machine specific configuration here: 
+    networking.hostName = "$HOST"; # Define your hostname.
+    # #configure swapfiles and other machine specific configuration here:
     # swapDevices = [{
-    #     device = \"/swapfile\";
+    #     device = "/swapfile";
     #     size = 2 * 1024; # 16GB
     # }];
-}" >  machines/$HOST/configuration.nix
+}
+EOF
 
+echo "Generating hardware configuration..."
+nixos-generate-config --dir "machines/$HOST"
 
-# GENERATE HARDWARE
-nixos-generate-config --dir machines/$HOST
+echo "Adding new machine to flake.nix..."
 
+sed -i "/### DO NOT REMOVE OR MOVE THIS LINE : ADD MACHINE CONFIG OVER THIS LINE/i \
+        $HOST = lib.nixosSystem { \
+          inherit system; \
+          modules = [./machines/$HOST/configuration.nix]; \
+        };" flake.nix
 
-# ADD new hardware to flake.nix config
-sed -i "${LINE_FLAKE_NIX}i\ \ \ \ \ \ \ \ \ \ \ \ $HOST = lib.nixosSystem { \n\
-                inherit system; \n\
-                modules = [./machines/$HOST/configuration.nix]; \n\
-            };" flake.nix
-
-
-# Commit everything
-git add machines/$HOST
-git add flake.nix
+echo "Committing changes..."
+git add "machines/$HOST" flake.nix
 git commit -m "machine($HOST): initial configuration"
 
+echo "Done."
+echo "You can now run 'make rebuild' to build the new system."

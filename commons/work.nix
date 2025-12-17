@@ -26,11 +26,10 @@ services.pipewire = {
   # This acts as the bridge between Chrome and the OS
   
   services.gnome.gnome-remote-desktop.enable = true;
-    services.displayManager.gdm = {
-        enable = true;
-        wayland = true;
-  };
-  services.desktopManager.gnome.enable = true;
+      # services.displayManager.gdm = {
+      #     enable = true;
+      #     wayland = true;
+      # };  services.desktopManager.gnome.enable = true;
   services.xserver.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
   xdg.portal = {

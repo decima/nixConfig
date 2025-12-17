@@ -1,7 +1,11 @@
 host ?= $(shell bash -c 'read -p "Host: " host; echo $$host')
+user ?= $(shell bash -c 'read -p "User: " user; echo $$user')
 
 homeRebuild:
 	home-manager switch --flake .
+
+homeRebuildSpecific:
+	home-manager switch --flake .#$(user)@$(host)
 
 systemRebuild:
 	sudo nixos-rebuild switch --flake .

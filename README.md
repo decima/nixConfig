@@ -2,9 +2,6 @@
 
 My nixOs Configurations
 
-
-**DISCLAIMER: This readme and this project is still a work in progress, use it at your own risks.**
-
 ## Getting started
 
 You have a fresh machine running a fresh NixOS install.
@@ -18,7 +15,11 @@ Then add your new machine/reconfigure a machine
 
 ## How to add a new machine/reconfigure a machine
 
-You can skip all these steps just by running utils/add_machine.sh
+You can skip all these steps just by running `utils/add_machine.sh <hostname>`
+
+## How to add a new home manager configuration
+
+You can skip all these steps just by running `utils/add_home.sh <user> <hostname>`
 
 ### Create a git branch
 
