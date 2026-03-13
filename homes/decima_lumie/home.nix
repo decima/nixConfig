@@ -96,6 +96,9 @@ in
   #
   #  /etc/profiles/per-user/decima/etc/profile.d/hm-session-vars.sh
   #
+
+
+
   programs.bash.enable = true;
   programs.zsh.initContent = lib.mkBefore ''
     touch /home/decima/.organization_list.csv

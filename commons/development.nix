@@ -35,7 +35,7 @@
 
     jetbrains.datagrip
 
-    jetbrains-toolbox
+    # jetbrains-toolbox
     
     terminator
 

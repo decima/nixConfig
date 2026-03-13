@@ -46,6 +46,7 @@ in
     (writeShellScriptBin "ducks" (builtins.readFile ./scripts/ducks.sh))
     (writeShellScriptBin "jjqn" (builtins.readFile ./scripts/jjqn.sh))
     (writeShellScriptBin "kmlt" (builtins.readFile ./scripts/kmlt.sh))
+    (writeShellScriptBin "qes" (builtins.readFile ./scripts/qes.sh))
   ];
 
   home.sessionVariables = {

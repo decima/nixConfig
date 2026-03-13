@@ -26,6 +26,13 @@ bearer(){
 kmlt() {
 	curl -s https://kaamelott.chaudie.re/api/random | jjqn
 }
+kes() {
+          export ENV=$1
+          export ORG=$2
+          export DOCID=$3
+          echo "kube_es -p -c $ENV -m GET \"w_''${ORG}__/_doc/''${DOCID}?_source_excludes=vectorized_content,vectorized_title\" | jq"
+          kube_es -p -c $ENV -m GET "w_''${ORG}__/_doc/''${DOCID}?_source_excludes=vectorized_content,vectorized_title" | jq
+}
 
 decode_jwt() {
     _decode_base64_url $(echo -n $1 | cut -d "." -f ${2:-2}) |

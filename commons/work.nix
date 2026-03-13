@@ -15,7 +15,13 @@ let
 
 in
 {
+programs.bash.shellAliases = {
+  "sbire" = "VERTEX_LOCATION=global GOOGLE_CLOUD_PROJECT=lumapps-dev-ai-tooling opencode";
+};
 
+programs.zsh.shellAliases = {
+  "sbire" = "VERTEX_LOCATION=global GOOGLE_CLOUD_PROJECT=lumapps-dev-ai-tooling opencode";
+};
 services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -68,6 +74,8 @@ nixpkgs.overlays = [
     xfce.xfce4-windowck-plugin
     xfce.xfce4-whiskermenu-plugin
     skippy-xd
+
+    opencode
     
     pidgin
     slack
@@ -90,7 +98,7 @@ nixpkgs.overlays = [
     python3Packages.pylint
     python3Packages.typer
     fzf
-    jetbrains.pycharm-community
+    jetbrains.pycharm
 
     golangciLintCustom
     gofumpt
@@ -109,6 +117,14 @@ nixpkgs.overlays = [
     burpsuite
 
   ];
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+  ];
+
+  fonts.fontconfig.enable = true;
 
   programs.nix-ld.enable = true;
 
